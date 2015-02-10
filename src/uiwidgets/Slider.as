@@ -62,12 +62,12 @@ public class Slider extends Sprite implements DragClient {
     private function keyDown(evt:KeyboardEvent):void {
         var dist:Number = 0.1;
         switch (evt.keyCode) {
-            case (Keyboard.LEFT): {
+            case (Keyboard.PAGE_DOWN): {
                 this.value -= dist;
                 evt.preventDefault();
                 break;
             }
-            case (Keyboard.RIGHT): {
+            case (Keyboard.PAGE_UP): {
                 this.value += dist;
                 evt.preventDefault();
                 break;
