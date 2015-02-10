@@ -50,6 +50,7 @@ public class PaletteSelectorItem extends Sprite {
 
         addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 	}
+
     public function keyDown(evt:KeyboardEvent):void {
         switch (evt.keyCode) {
             case (Keyboard.ENTER):
@@ -62,7 +63,6 @@ public class PaletteSelectorItem extends Sprite {
             }
         }
     }
-
 
 	private function addLabel(s:String):void {
 		label = new TextField();

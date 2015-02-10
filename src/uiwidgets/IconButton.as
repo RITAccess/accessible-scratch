@@ -29,9 +29,12 @@
 
 package uiwidgets {
 	import flash.display.*;
-	import flash.events.MouseEvent;
+import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
 	import flash.text.*;
 	import assets.Resources;
+
+import flash.ui.Keyboard;
 
 public class IconButton extends Sprite {
 
@@ -56,8 +59,24 @@ public class IconButton extends Sprite {
 		addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
 		addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
 		mouseChildren = false;
-	}
+        addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+    }
 
+    public function keyDown(evt:KeyboardEvent):void {
+        switch (evt.keyCode) {
+            case (Keyboard.ENTER):
+            {
+                if (clickFunction != null) {
+                    clickFunction(this);
+                    lastEvent = null;
+                }
+                evt.preventDefault();
+            }
+            default: {
+
+            }
+        }
+    }
 	public function actOnMouseUp():void {
 		removeEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 		addEventListener(MouseEvent.MOUSE_UP, mouseDown);

@@ -729,7 +729,7 @@ public class Scratch extends Sprite {
 			m.addItem('Revert', revertToOriginalProject);
 		}
 
-		if (b.lastEvent.shiftKey) {
+		if (b.lastEvent!= null && b.lastEvent.shiftKey) {
 			m.addLine();
 			m.addItem('Save Project Summary', saveSummary);
 		}
