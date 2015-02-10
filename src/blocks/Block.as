@@ -890,11 +890,13 @@ public class Block extends Sprite {
             {
                 Scratch.app.runtime.interp.toggleThread(topBlock(), Scratch.app.viewedObj(), 1);
                 evt.preventDefault();
+				break;
             }
             case (Keyboard.SPACE):
             {
                 //TODO: Engage targeting menu
                 evt.preventDefault();
+				break;
             }
             default: {
 
