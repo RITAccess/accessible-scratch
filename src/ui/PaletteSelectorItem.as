@@ -57,6 +57,7 @@ public class PaletteSelectorItem extends Sprite {
             {
                 PaletteSelector(parent).select(categoryID, false);
                 evt.preventDefault();
+                break;
             }
             default: {
 

@@ -71,6 +71,7 @@ public class IconButton extends Sprite {
                     lastEvent = null;
                 }
                 evt.preventDefault();
+                break;
             }
             default: {
 

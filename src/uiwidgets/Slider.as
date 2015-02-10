@@ -27,7 +27,9 @@ package uiwidgets {
 	import flash.display.*;
 	import flash.events.*;
 	import flash.geom.*;
-	import util.DragClient;
+import flash.ui.Keyboard;
+
+import util.DragClient;
 
 public class Slider extends Sprite implements DragClient {
 
@@ -54,7 +56,27 @@ public class Slider extends Sprite implements DragClient {
 		moveKnob();
 		addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
         this.tabIndex = 1;
+        addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 	}
+
+    private function keyDown(evt:KeyboardEvent):void {
+        var dist:Number = 0.1;
+        switch (evt.keyCode) {
+            case (Keyboard.LEFT): {
+                this.value -= dist;
+                evt.preventDefault();
+                break;
+            }
+            case (Keyboard.RIGHT): {
+                this.value += dist;
+                evt.preventDefault();
+                break;
+            }
+            default: {
+
+            }
+        }
+    }
 
 	public function get min():Number { return minValue; }
 	public function set min(n:Number):void { minValue = n; }
