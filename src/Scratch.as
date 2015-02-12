@@ -37,6 +37,7 @@ import flash.net.FileReferenceList;
 import flash.net.LocalConnection;
 import flash.system.*;
 import flash.text.*;
+import flash.ui.Keyboard;
 import flash.utils.*;
 
 import interpreter.*;
@@ -421,10 +422,13 @@ public class Scratch extends Sprite {
 
 	private function keyDown(evt:KeyboardEvent):void {
 		// Escape exists presentation mode.
-		if ((evt.charCode == 27) && stagePart.isInPresentationMode()) {
+		if ((evt.charCode == Keyboard.ESCAPE) && stagePart.isInPresentationMode()) {
 			setPresentationMode(false);
 			stagePart.exitPresentationMode();
 		}
+        else if (evt.charCode == Keyboard.ESCAPE) {
+            Menu.removeMenusFrom(stage);
+        }
 		// Handle enter key
 //		else if(evt.keyCode == 13 && !stage.focus) {
 //			stagePart.playButtonPressed(null);
@@ -729,7 +733,7 @@ public class Scratch extends Sprite {
 			m.addItem('Revert', revertToOriginalProject);
 		}
 
-		if (b.lastEvent.shiftKey) {
+		if (b.lastEvent!= null && b.lastEvent.shiftKey) {
 			m.addLine();
 			m.addItem('Save Project Summary', saveSummary);
 		}
