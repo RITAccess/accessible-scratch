@@ -29,6 +29,7 @@
 
 package uiwidgets {
 	import flash.display.*;
+import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 	import flash.text.*;
@@ -67,8 +68,8 @@ public class IconButton extends Sprite {
             case (Keyboard.ENTER):
             {
                 if (clickFunction != null) {
+                    lastEvent = new MouseEvent('dummy');
                     clickFunction(this);
-                    lastEvent = null;
                 }
                 evt.preventDefault();
                 break;
