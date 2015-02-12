@@ -77,6 +77,10 @@ public class PaletteBuilder {
 		}
 		addBlocksForCategory(selectedCategory, catColor);
 		updateCheckboxes();
+        if (app.palette.numChildren > 0 && app.palette.getChildAt(0) is InteractiveObject) {
+            app.stage.focus = app.palette.getChildAt(0) as InteractiveObject;
+        }
+
 	}
 
 	private function addBlocksForCategory(category:int, catColor:int):void {
