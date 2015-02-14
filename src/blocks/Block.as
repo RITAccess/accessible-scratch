@@ -46,7 +46,10 @@ import flash.display.*;
 import flash.ui.Keyboard;
 
 import translation.Translator;
-	import util.*;
+
+import ui.BlockPalette;
+
+import util.*;
 	import uiwidgets.*;
 	import scratch.*;
 
@@ -889,6 +892,7 @@ public class Block extends Sprite {
 	/* Events */
 
 	public function keyDown(evt:KeyboardEvent):void {
+		var self:Block = this;
 		switch (evt.keyCode) {
             case (Keyboard.ENTER):
             {
@@ -905,31 +909,42 @@ public class Block extends Sprite {
 				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e) {
 					var target = e[1];
 					var targetLocation:Number = e[2];
-					var targetPosition = e[0];
 					var location = "";
+					var appendFunction:Function = function() {};
+					trace(self.parent);
 
 					switch (targetLocation) {
-						case (0):
+						case (ROLE_NONE):
 						{
 							location = "after ";
+							if (target is Block) {
+								appendFunction = function() {
+									if (self.parent is BlockPalette) {
+										(target as Block).insertBlock(self.duplicate(false, true));
+										Menu.removeMenusFrom(Scratch.app.stage);
+									}
+								};
+							}
 							break;
 						}
-						case (1):
+						case (ROLE_ABSOLUTE):
 						{
 							location = "before ";
+							if (target is Block) {
+								appendFunction = function() {
+									(target as Block).insertBlockAbove(self.duplicate(false, true));
+									Menu.removeMenusFrom(Scratch.app.stage);
+								};
+							}
 							break;
 						}
 					}
 
-					m.addItem(location + target.accessibilityProperties.name, function() {
-						trace(e);
-					});
+					m.addItem(location + target.accessibilityProperties.name, appendFunction);
 
 				});
 
 				m.showOnStage(Scratch.app.stage, this.x, this.y);
-
-
 
                 evt.preventDefault();
                 break;
