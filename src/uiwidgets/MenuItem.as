@@ -24,9 +24,13 @@
 
 package uiwidgets {
 	import flash.display.*;
-	import flash.events.MouseEvent;
+import flash.events.FocusEvent;
+import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
 	import flash.text.*;
-	import scratch.BlockMenus;
+import flash.ui.Keyboard;
+
+import scratch.BlockMenus;
 	import translation.Translator;
 	import util.Color;
 
@@ -56,10 +60,29 @@ public class MenuItem extends Sprite {
 			addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
 			addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
 			addEventListener(MouseEvent.MOUSE_UP, mouseUp);
+            addEventListener(FocusEvent.FOCUS_IN, mouseOver);
+            addEventListener(FocusEvent.FOCUS_OUT, mouseOut);
+            addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 		}
         this.tabIndex = 1;
 	}
 
+
+    /* Events */
+
+    public function keyDown(evt:KeyboardEvent):void {
+        switch (evt.keyCode) {
+            case (Keyboard.ENTER):
+            {
+                menu.selected(selection);
+                evt.preventDefault();
+                break;
+            }
+            default: {
+
+            }
+        }
+    }
 	public function setWidthHeight(w:int, itemHeight:int):void {
 		this.w = w;
 		this.h = 1;
@@ -154,8 +177,8 @@ public class MenuItem extends Sprite {
 		return Color.fromHSV(hsv[0], hsv[1], brightness);
 	}
 
-	private function mouseOver(evt:MouseEvent):void { setHighlight(true) }
-	private function mouseOut(evt:MouseEvent):void { setHighlight(false) }
-	private function mouseUp(evt:MouseEvent):void { menu.selected(selection) }
+	private function mouseOver(evt):void { setHighlight(true) }
+	private function mouseOut(evt):void { setHighlight(false) }
+	private function mouseUp(evt):void { menu.selected(selection) }
 
 }}

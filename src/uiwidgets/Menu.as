@@ -60,7 +60,6 @@ public class Menu extends Sprite {
 		this.menuName = menuName;
 		this.color = color;
 		this.itemHeight = itemHeight;
-        this.tabIndex = 1;
 	}
 
 	public function addItem(label:*, value:* = null, enabled:Boolean = true, checkmark:Boolean = false):void {
@@ -99,6 +98,9 @@ public class Menu extends Sprite {
 		}
 		stage.addChild(this);
 		addEventListener(Event.ENTER_FRAME, step);
+        if (this.getChildAt(0) is InteractiveObject) {
+            stage.focus = this.getChildAt(0) as InteractiveObject;
+        }
 	}
 
 	public static function dummyButton():IconButton {
