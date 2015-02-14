@@ -31,7 +31,8 @@
 // sequence from a specification string (e.g. "%n + %n") and type (e.g. reporter).
 
 package blocks {
-import extensions.ExtensionManager;
+
+import flash.accessibility.AccessibilityProperties;
 
 
 import flash.display.*;
@@ -111,6 +112,9 @@ public class Block extends Sprite {
 
 	public function Block(spec:String, type:String = " ", color:int = 0xD00000, op:* = 0, defaultArgs:Array = null) {
 		this.spec = Translator.map(spec);
+		this.accessibilityProperties = new AccessibilityProperties();
+		var pattern:RegExp = /\ %m\.(\S*)/g;
+		this.accessibilityProperties.name = this.spec.replace(pattern, " \"argument $1\"");
 		this.type = type;
 		this.op = op;
 
@@ -894,7 +898,39 @@ public class Block extends Sprite {
             }
             case (Keyboard.SPACE):
             {
-                //TODO: Engage targeting menu
+				trace("you hit the spacebar!");
+
+				var m:Menu = new Menu();
+
+				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e) {
+					var target = e[1];
+					var targetLocation:Number = e[2];
+					var targetPosition = e[0];
+					var location = "";
+
+					switch (targetLocation) {
+						case (0):
+						{
+							location = "after ";
+							break;
+						}
+						case (1):
+						{
+							location = "before ";
+							break;
+						}
+					}
+
+					m.addItem(location + target.accessibilityProperties.name, function() {
+						trace(e);
+					});
+
+				});
+
+				m.showOnStage(Scratch.app.stage, this.x, this.y);
+
+
+
                 evt.preventDefault();
 				break;
             }
