@@ -8,15 +8,9 @@ package access
 import flash.accessibility.Accessibility;
 import flash.accessibility.AccessibilityImplementation;
 import flash.accessibility.AccessibilityProperties;
-import flash.display.DisplayObject;
-import flash.display.DisplayObjectContainer;
 import flash.events.Event;
-import flash.system.ApplicationDomain;
-
-import mx.core.IFlexModuleFactory;
 import mx.core.mx_internal;
-import mx.resources.ResourceManager;
-import mx.resources.IResourceManager;
+import mx.accessibility.AccConst;
 
 import ui.AccessibleComponent;
 

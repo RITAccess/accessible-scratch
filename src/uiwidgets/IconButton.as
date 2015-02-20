@@ -36,7 +36,13 @@ import flash.events.MouseEvent;
 	import assets.Resources;
 
 import flash.ui.Keyboard;
+import access.IconButtonAccImpl;
+
+import mx.core.mx_internal;
+
 import ui.AccessibleComponent;
+
+use namespace mx_internal;
 
 [AccessibilityClass(implementation="access.IconButtonAccImpl")]
 public class IconButton extends AccessibleComponent {
@@ -52,10 +58,13 @@ public class IconButton extends AccessibleComponent {
 	private var onImage:DisplayObject;
 	private var offImage:DisplayObject;
 
+    private var accClass:Class = IconButtonAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
+
 	public function IconButton(clickFunction:Function, onImageOrName:*, offImageObj:DisplayObject = null, isRadioButton:Boolean = false) {
 		this.clickFunction = clickFunction;
 		this.isRadioButton = isRadioButton;
         this.tabIndex = 1;
+        this.name = 'this is a button';
 		useDefaultImages();
 		setImage(onImageOrName, offImageObj);
 		addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
@@ -65,6 +74,27 @@ public class IconButton extends AccessibleComponent {
         addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
         initialize();
     }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class mixins
+    //
+    //--------------------------------------------------------------------------
+    /**
+     *  Placeholder for mixin by IconButtonAccImpl.
+     */
+    mx_internal static var createAccessibilityImplementation:Function;
+
+
+    /**
+     *  @inheritDoc
+     */
+    override protected function initializeAccessibility():void
+    {
+        if (IconButton.createAccessibilityImplementation != null)
+            IconButton.createAccessibilityImplementation(this);
+    }
+
 
     public function keyDown(evt:KeyboardEvent):void {
         switch (evt.keyCode) {
