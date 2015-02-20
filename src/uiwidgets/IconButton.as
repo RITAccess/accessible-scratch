@@ -36,8 +36,10 @@ import flash.events.MouseEvent;
 	import assets.Resources;
 
 import flash.ui.Keyboard;
+import ui.AccessibleComponent;
 
-public class IconButton extends Sprite {
+[AccessibilityClass(implementation="access.IconButtonAccImpl")]
+public class IconButton extends AccessibleComponent {
 
 	public var clickFunction:Function;
 	public var isRadioButton:Boolean; // if true then other button children of my parent will be turned off when I'm turned on
@@ -61,6 +63,7 @@ public class IconButton extends Sprite {
 		addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
 		mouseChildren = false;
         addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+        initialize();
     }
 
     public function keyDown(evt:KeyboardEvent):void {
