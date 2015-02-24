@@ -31,6 +31,8 @@
 // sequence from a specification string (e.g. "%n + %n") and type (e.g. reporter).
 
 package blocks {
+import access.BlockAccImpl;
+
 import extensions.ExtensionManager;
 
 
@@ -44,12 +46,20 @@ import flash.display.*;
 
 import flash.ui.Keyboard;
 
+import mx.core.mx_internal;
+
 import translation.Translator;
-	import util.*;
+
+import ui.AccessibleComponent;
+
+import util.*;
 	import uiwidgets.*;
 	import scratch.*;
 
-public class Block extends Sprite {
+use namespace mx_internal;
+
+[AccessibilityClass(implementation="access.BlockAccImpl")]
+public class Block extends AccessibleComponent {
 
 	private const minCommandWidth:int = 36;
 	private const minHatWidth:int = 80;
@@ -178,7 +188,30 @@ public class Block extends Sprite {
 
 		addEventListener(FocusEvent.KEY_FOCUS_CHANGE, focusChange);
 		addEventListener(KeyboardEvent.KEY_UP, keyDown);
-	}
+        initializeAccessibility();
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class mixins
+    //
+    //--------------------------------------------------------------------------
+    private var accClass:Class = BlockAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
+    /**
+     *  Placeholder for mixin by IconButtonAccImpl.
+     */
+    mx_internal static var createAccessibilityImplementation:Function;
+
+
+    /**
+     *  @inheritDoc
+     */
+    override protected function initializeAccessibility():void
+    {
+        if (Block.createAccessibilityImplementation != null)
+            Block.createAccessibilityImplementation(this);
+    }
+
 
 	public function setSpec(newSpec:String, defaultArgs:Array = null):void {
 		for each (var o:DisplayObject in labelsAndArgs) {

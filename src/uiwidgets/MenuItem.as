@@ -44,6 +44,7 @@ import util.Color;
 
 use namespace mx_internal;
 
+[AccessibilityClass(implementation="access.MenuItemAccImpl")]
 public class MenuItem extends AccessibleComponent {
 
 	private const leftMargin:int = 22;
