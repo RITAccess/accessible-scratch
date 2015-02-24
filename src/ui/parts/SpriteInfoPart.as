@@ -133,11 +133,11 @@ public class SpriteInfoPart extends UIPart implements DragClient {
 		for each (var b:IconButton in rotationStyleButtons) addChild(b);
 
 		addChild(draggableLabel = makeLabel('', readoutLabelFormat));
-		addChild(draggableButton = new IconButton(toggleLock, 'checkbox'));
+		addChild(draggableButton = new IconButtonCheckbox(toggleLock));
 		draggableButton.disableMouseover();
 
 		addChild(showSpriteLabel = makeLabel('', readoutLabelFormat));
-		addChild(showSpriteButton = new IconButton(toggleShowSprite, 'checkbox'));
+		addChild(showSpriteButton = new IconButtonCheckbox(toggleShowSprite));
 		showSpriteButton.disableMouseover();
 	}
 

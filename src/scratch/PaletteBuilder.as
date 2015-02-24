@@ -36,6 +36,7 @@ package scratch {
 	import ui.parts.UIPart;
 	import uiwidgets.*;
 	import translation.Translator;
+import mx.accessibility.AccConst;
 
 public class PaletteBuilder {
 
@@ -275,7 +276,8 @@ public class PaletteBuilder {
 	}
 
 	protected function addReporterCheckbox(block:Block):void {
-		var b:IconButton = new IconButton(toggleWatcher, 'checkbox');
+		var b:IconButtonCheckbox = new IconButtonCheckbox(toggleWatcher);
+        b.name = 'reporter checkbox';
 		b.disableMouseover();
 		var targetObj:ScratchObj = isSpriteSpecific(block.op) ? app.viewedObj() : app.stagePane;
 		b.clientData = {
@@ -311,7 +313,8 @@ public class PaletteBuilder {
 	}
 
 	private function addVariableCheckbox(varName:String, isList:Boolean):void {
-		var b:IconButton = new IconButton(toggleWatcher, 'checkbox');
+		var b:IconButtonCheckbox = new IconButtonCheckbox(toggleWatcher);
+        b.name = 'variable checkbox';
 		b.disableMouseover();
 		var targetObj:ScratchObj = app.viewedObj();
 		if (isList) {

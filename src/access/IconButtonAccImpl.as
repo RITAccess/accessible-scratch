@@ -3,12 +3,17 @@ import flash.accessibility.Accessibility;
 
 import mx.core.mx_internal;
 import uiwidgets.IconButton;
+import mx.accessibility.AccConst;
 
 use namespace mx_internal;
 
 public class IconButtonAccImpl extends ScratchAccImpl {
     public function IconButtonAccImpl(master:IconButton) {
         super(master);
+    }
+
+    public override function get_accRole(childID:uint):uint {
+        return (master as IconButton).role;
     }
 
     public override function get_accName(childID:uint):String

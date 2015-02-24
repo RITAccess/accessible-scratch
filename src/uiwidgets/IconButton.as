@@ -37,6 +37,7 @@ import flash.events.MouseEvent;
 
 import flash.ui.Keyboard;
 import access.IconButtonAccImpl;
+import mx.accessibility.AccConst;
 
 import mx.core.mx_internal;
 
@@ -52,9 +53,10 @@ public class IconButton extends AccessibleComponent {
 	public var isMomentary:Boolean; // if true then button does not remain on when clicked
 	public var lastEvent:MouseEvent;
 	public var clientData:*;
+    public var role:uint;
 
 	private var buttonIsOn:Boolean;
-	private var mouseIsOver:Boolean;
+    private var mouseIsOver:Boolean;
 	private var onImage:DisplayObject;
 	private var offImage:DisplayObject;
 
@@ -64,7 +66,8 @@ public class IconButton extends AccessibleComponent {
 		this.clickFunction = clickFunction;
 		this.isRadioButton = isRadioButton;
         this.tabIndex = 1;
-        this.name = 'this is a button';
+        this.name = (onImageOrName is String ? onImageOrName as String : 'icon button');
+        this.role = AccConst.ROLE_SYSTEM_PUSHBUTTON;
 		useDefaultImages();
 		setImage(onImageOrName, offImageObj);
 		addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);

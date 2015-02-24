@@ -207,7 +207,7 @@ public class ProcedureSpecEditor extends Sprite {
 	}
 
 	private function addwarpCheckbox():void {
-		addChild(warpCheckbox = new IconButton(null, 'checkbox'));
+		addChild(warpCheckbox = new IconButtonCheckbox(null));
 		warpCheckbox.disableMouseover();
 		addChild(warpLabel = makeLabel('Run without screen refresh', 14));
 	}

@@ -256,6 +256,7 @@ public class ScratchComment extends Sprite {
 	private function addExpandButton():void {
 		function toggleExpand(b:IconButton):void { setExpanded(!isOpen) }
 		expandButton = new IconButton(toggleExpand, expandIcon(true), expandIcon(false));
+        expandButton.name = 'expand';
 		expandButton.setOn(true);
 		expandButton.disableMouseover();
 		expandButton.x = 4;

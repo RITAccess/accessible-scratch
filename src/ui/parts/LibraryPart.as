@@ -287,6 +287,12 @@ public class LibraryPart extends UIPart {
 		return b;
 	}
 
+    private function makeCheckbox(fcn:Function):IconButtonCheckbox {
+        var b:IconButtonCheckbox = new IconButtonCheckbox(fcn);
+        b.isMomentary = true;
+        return b;
+    }
+
 	// -----------------------------
 	// Video Button
 	//------------------------------
@@ -315,7 +321,7 @@ public class LibraryPart extends UIPart {
 			Translator.map('Video on:'), smallTextFormat,
 			1, backdropLibraryButton.y + 22));
 
-		videoButton = makeButton(turnVideoOn, 'checkbox');
+		videoButton = makeCheckbox(turnVideoOn);
 		videoButton.x = videoLabel.x + videoLabel.width + 1;
 		videoButton.y = videoLabel.y + 3;
 		videoButton.disableMouseover();
