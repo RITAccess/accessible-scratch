@@ -23,18 +23,27 @@
 // A single menu item for Menu.as.
 
 package uiwidgets {
-	import flash.display.*;
+import access.MenuItemAccImpl;
+
+import flash.display.*;
 import flash.events.FocusEvent;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 	import flash.text.*;
 import flash.ui.Keyboard;
 
+import mx.core.mx_internal;
+
 import scratch.BlockMenus;
 	import translation.Translator;
-	import util.Color;
 
-public class MenuItem extends Sprite {
+import ui.AccessibleComponent;
+
+import util.Color;
+
+use namespace mx_internal;
+
+public class MenuItem extends AccessibleComponent {
 
 	private const leftMargin:int = 22;
 	private const rightMargin:int = 10;
@@ -65,7 +74,30 @@ public class MenuItem extends Sprite {
             addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 		}
         this.tabIndex = 1;
-	}
+        initializeAccessibility();
+    }
+
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class mixins
+    //
+    //--------------------------------------------------------------------------
+    private var accClass:Class = MenuItemAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
+    /**
+     *  Placeholder for mixin by IconButtonAccImpl.
+     */
+    mx_internal static var createAccessibilityImplementation:Function;
+
+
+    /**
+     *  @inheritDoc
+     */
+    override protected function initializeAccessibility():void
+    {
+        if (MenuItem.createAccessibilityImplementation != null)
+            MenuItem.createAccessibilityImplementation(this);
+    }
 
 
     /* Events */
