@@ -20,6 +20,10 @@ public class MenuItemAccImpl extends ScratchAccImpl {
         return (master as MenuItem).getLabel();
     }
 
+    public override function get_accState(childId:uint):uint {
+        return (master as MenuItem).isEnabled() ? getState(childId) : AccConst.STATE_SYSTEM_UNAVAILABLE;
+    }
+
     MenuItem.createAccessibilityImplementation =
             createAccessibilityImplementation;
 

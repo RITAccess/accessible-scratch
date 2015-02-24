@@ -26,6 +26,7 @@ package uiwidgets {
 import access.MenuItemAccImpl;
 
 import flash.display.*;
+import flash.events.Event;
 import flash.events.FocusEvent;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
@@ -53,12 +54,14 @@ public class MenuItem extends AccessibleComponent {
 	private var label:TextField; // if label is null, this item is a divider line
 	private var checkmark:Shape;
 	private var selection:*;
+    private var enabled:Boolean;
 
 	private var base:Shape;
 	private var w:int, h:int;
 
 	public function MenuItem(menu:Menu, labelText:*, selection:*, enabled:Boolean) {
 		this.menu = menu;
+        this.enabled = enabled;
 		this.selection = (selection == null) ? labelText : selection;
 		addChild(base = new Shape());
 		if (labelText == Menu.line) return;
@@ -77,6 +80,7 @@ public class MenuItem extends AccessibleComponent {
         initializeAccessibility();
     }
 
+    public function isEnabled():Boolean { return enabled; }
 
     //--------------------------------------------------------------------------
     //
@@ -209,8 +213,8 @@ public class MenuItem extends AccessibleComponent {
 		return Color.fromHSV(hsv[0], hsv[1], brightness);
 	}
 
-	private function mouseOver(evt):void { setHighlight(true) }
-	private function mouseOut(evt):void { setHighlight(false) }
-	private function mouseUp(evt):void { menu.selected(selection) }
+	private function mouseOver(evt:Event):void { setHighlight(true) }
+	private function mouseOut(evt:Event):void { setHighlight(false) }
+	private function mouseUp(evt:Event):void { menu.selected(selection) }
 
 }}
