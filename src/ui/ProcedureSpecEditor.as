@@ -59,13 +59,13 @@ public class ProcedureSpecEditor extends Sprite {
 		addChild(moreLabel = makeLabel('Options', 12));
 		moreLabel.addEventListener(MouseEvent.MOUSE_DOWN, toggleButtons);
 
-		addChild(moreButton = new IconButton(toggleButtons, 'reveal'));
+		addChild(moreButton = new IconButton(toggleButtons, 'reveal', null, false, 'reveal specs'));
 		moreButton.disableMouseover();
 
 		addButtonsAndLabels();
 		addwarpCheckbox();
 
-		addChild(deleteButton = new IconButton(deleteItem, Resources.createBmp('removeItem')));
+		addChild(deleteButton = new IconButton(deleteItem, Resources.createBmp('removeItem'), null, false, 'remove item'));
 
 		addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 		addEventListener(Event.CHANGE, textChange);

@@ -62,11 +62,11 @@ public class IconButton extends AccessibleComponent {
 
     private var accClass:Class = IconButtonAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
 
-	public function IconButton(clickFunction:Function, onImageOrName:*, offImageObj:DisplayObject = null, isRadioButton:Boolean = false) {
+	public function IconButton(clickFunction:Function, onImageOrName:*, offImageObj:DisplayObject = null, isRadioButton:Boolean = false, narrationText:String = null) {
 		this.clickFunction = clickFunction;
 		this.isRadioButton = isRadioButton;
         this.tabIndex = 1;
-        this.name = (onImageOrName is String ? onImageOrName as String : 'icon button');
+        this.name = (narrationText != null) ? narrationText : (onImageOrName is String ? onImageOrName as String : 'icon');
         this.role = AccConst.ROLE_SYSTEM_PUSHBUTTON;
 		useDefaultImages();
 		setImage(onImageOrName, offImageObj);

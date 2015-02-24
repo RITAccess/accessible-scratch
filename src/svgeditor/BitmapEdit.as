@@ -331,7 +331,9 @@ public class BitmapEdit extends ImageEdit {
 		var btn:IconButton = new IconButton(
 			stampBitmap,
 			SoundsPart.makeButtonImg('bitmapStamp', true, buttonSize),
-			SoundsPart.makeButtonImg('bitmapStamp', false, buttonSize));
+			SoundsPart.makeButtonImg('bitmapStamp', false, buttonSize),
+            false,
+            'stamp tool');
 		btn.x = 0;
 		btn.y = lastTool.y + lastTool.height + 4;
 		SimpleTooltips.add(btn, {text: 'Select and duplicate', direction: 'right'});

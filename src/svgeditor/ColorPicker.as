@@ -74,7 +74,8 @@ public class ColorPicker extends Sprite {
 			selectEyedropper,
 			ImageEdit.makeToolButton('eyedropper', true),
 			ImageEdit.makeToolButton('eyedropper', false),
-			true);
+			true,
+            'eye dropper tool');
 		editor.registerToolButton('eyedropper', ib);
 		ib.x = primaryColorSwatch.x + 163;
 		ib.y = 0;

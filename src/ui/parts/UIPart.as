@@ -106,7 +106,7 @@ public class UIPart extends Sprite {
 	public static function makeMenuButton(s:String, fcn:Function, hasArrow:Boolean = false, labelColor:int = 0xFFFFFF):IconButton {
 		var onImg:Sprite = makeButtonLabel(Translator.map(s), CSS.buttonLabelOverColor, hasArrow);
 		var offImg:Sprite = makeButtonLabel(Translator.map(s), labelColor, hasArrow);
-		var btn:IconButton = new IconButton(fcn, onImg, offImg);
+		var btn:IconButton = new IconButton(fcn, onImg, offImg, false, s);
 		btn.isMomentary = true;
 		return btn;
 	}

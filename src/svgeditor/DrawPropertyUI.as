@@ -24,7 +24,10 @@ package svgeditor {
 	import flash.geom.*;
 	import flash.text.TextField;
 	import assets.Resources;
-	import translation.Translator;
+
+import flash.utils.Dictionary;
+
+import translation.Translator;
 	import ui.parts.UIPart;
 	import uiwidgets.*;
 	import flash.text.TextFormat;
@@ -222,22 +225,22 @@ public class DrawPropertyUI extends Sprite {
 	private function makeFillUI():void {
 		fillUI = new Sprite();
 
-		fillBtnSolid = new IconButton(setFillStyle, null, null, true);
+		fillBtnSolid = new IconButton(setFillStyle, null, null, true, 'solid fill');
 		fillBtnSolid.name = 'solid';
 		fillBtnSolid.setOn(true);
 		fillUI.addChild(fillBtnSolid);
 
-		fillBtnHorizontal = new IconButton(setFillStyle, null, null, true);
+		fillBtnHorizontal = new IconButton(setFillStyle, null, null, true, 'linear horizontal gradient fill');
 		fillBtnHorizontal.name = 'linearHorizontal';
 		fillBtnHorizontal.x = 42;
 		fillUI.addChild(fillBtnHorizontal);
 
-		fillBtnVertical = new IconButton(setFillStyle, null, null, true);
+		fillBtnVertical = new IconButton(setFillStyle, null, null, true, 'linear vertical gradient fill');
 		fillBtnVertical.name = 'linearVertical';
 		fillBtnVertical.y = 31;
 		fillUI.addChild(fillBtnVertical);
 
-		fillBtnRadial = new IconButton(setFillStyle, null, null, true);
+		fillBtnRadial = new IconButton(setFillStyle, null, null, true, 'radial gradient fill');
 		fillBtnRadial.name = 'radial';
 		fillBtnRadial.x = 42;
 		fillBtnRadial.y = 31;
@@ -353,13 +356,11 @@ public class DrawPropertyUI extends Sprite {
 	private function makeShapeUI():void {
 		shapeUI = new Sprite();
 
-		shapeBtnFill = new IconButton(setShapeStyle, null, null, true);
+		shapeBtnFill = new IconButton(setShapeStyle, null, null, true, 'filled');
 		shapeBtnFill.x = 40;
-		shapeBtnFill.name = 'filled';
 		shapeUI.addChild(shapeBtnFill);
 
-		shapeBtnHollow = new IconButton(setShapeStyle, null, null, true);
-		shapeBtnHollow.name = 'hollow';
+		shapeBtnHollow = new IconButton(setShapeStyle, null, null, true, 'hollow');
 		shapeBtnHollow.setOn(true);
 		shapeUI.addChild(shapeBtnHollow);
 
@@ -521,13 +522,20 @@ public class DrawPropertyUI extends Sprite {
 	private function makeZoomButtons():void {
 		addChild(zoomButtons = new Sprite());
 		var zoomToolNames:Array = ['zoomOut', 'noZoom', 'zoomIn'];
+        var niceZoomToolNames:Object = {
+            'zoomOut': 'zoom out',
+            'noZoom': 'reset zoom',
+            'zoomIn': 'zoom in'
+        };
 		var x:int = 0;
 		for each (var toolName:String in zoomToolNames) {
 			var ib:IconButton = new IconButton(
 				editor.handleImmediateTool,
 				Resources.createBmp(toolName + 'On'),
 				Resources.createBmp(toolName + 'Off'),
-				false);
+				false,
+                niceZoomToolNames[toolName]
+            );
 			ib.isRadioButton = true;
 			ib.name = name;
 			ib.x = x;

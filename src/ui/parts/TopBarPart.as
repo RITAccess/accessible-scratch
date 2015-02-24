@@ -56,7 +56,7 @@ public class TopBarPart extends UIPart {
 
 	protected function addButtons():void {
 		addChild(shape = new Shape());
-		addChild(languageButton = new IconButton(app.setLanguagePressed, 'languageButton'));
+		addChild(languageButton = new IconButton(app.setLanguagePressed, 'languageButton', null, false, 'language select'));
 		languageButton.x = 9;
 		languageButton.isMomentary = true;
 		addTextButtons();
@@ -179,7 +179,7 @@ public class TopBarPart extends UIPart {
 		function mouseDown(evt:MouseEvent):void { toolOnMouseDown = CursorTool.tool }
 		var onImage:Sprite = toolButtonImage(iconName, CSS.overColor, 1);
 		var offImage:Sprite = toolButtonImage(iconName, 0, 0);
-		var b:IconButton = new IconButton(fcn, onImage, offImage);
+		var b:IconButton = new IconButton(fcn, onImage, offImage, false, iconName);
 		b.actOnMouseUp();
 		b.addEventListener(MouseEvent.MOUSE_DOWN, mouseDown); // capture tool on mouse down to support deselecting
 		return b;

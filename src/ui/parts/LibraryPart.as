@@ -74,10 +74,10 @@ public class LibraryPart extends UIPart {
 		addChild(spritesTitle);
 
 		addChild(newSpriteLabel = makeLabel(Translator.map('New sprite:'), CSS.titleFormat, 10, 5));
-		addChild(libraryButton = makeButton(spriteFromLibrary, 'library'));
-		addChild(paintButton = makeButton(paintSprite, 'paintbrush'));
-		addChild(importButton = makeButton(spriteFromComputer, 'import'));
-		addChild(photoButton = makeButton(spriteFromCamera, 'camera'));
+		addChild(libraryButton = makeButton(spriteFromLibrary, 'library', 'sprite library'));
+		addChild(paintButton = makeButton(paintSprite, 'paintbrush', 'paint new sprite'));
+		addChild(importButton = makeButton(spriteFromComputer, 'import', 'import new sprite'));
+		addChild(photoButton = makeButton(spriteFromCamera, 'camera', 'use camera for new sprite'));
 
 		addStageArea();
 		addNewBackdropButtons();
@@ -256,10 +256,10 @@ public class LibraryPart extends UIPart {
 			Translator.map('New backdrop:'), smallTextFormat, 3, 126));
 
 		// new backdrop buttons
-		addChild(backdropLibraryButton = makeButton(backdropFromLibrary, 'landscapeSmall'));
-		addChild(backdropPaintButton = makeButton(paintBackdrop, 'paintbrushSmall'));
-		addChild(backdropImportButton = makeButton(backdropFromComputer, 'importSmall'));
-		addChild(backdropCameraButton = makeButton(backdropFromCamera, 'cameraSmall'));
+		addChild(backdropLibraryButton = makeButton(backdropFromLibrary, 'landscapeSmall', 'backdrop library'));
+		addChild(backdropPaintButton = makeButton(paintBackdrop, 'paintbrushSmall', 'paint backdrop'));
+		addChild(backdropImportButton = makeButton(backdropFromComputer, 'importSmall', 'import backdrop'));
+		addChild(backdropCameraButton = makeButton(backdropFromCamera, 'cameraSmall', 'take picture for backdrop'));
 
 		var buttonY:int = 145;
 		backdropLibraryButton.x = 4;
@@ -281,8 +281,8 @@ public class LibraryPart extends UIPart {
 		addChild(spritesFrame);
 	}
 
-	private function makeButton(fcn:Function, iconName:String):IconButton {
-		var b:IconButton = new IconButton(fcn, iconName);
+	private function makeButton(fcn:Function, iconName:String, narrationText:String = null):IconButton {
+		var b:IconButton = new IconButton(fcn, iconName, null, false, narrationText);
 		b.isMomentary = true;
 		return b;
 	}
