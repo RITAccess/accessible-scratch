@@ -24,19 +24,28 @@
 // It handles mouse over, out, and up events and changes its appearance when selected.
 
 package ui {
-	import flash.display.*;
+import access.PaletteSelectorItemAccImpl;
+
+import flash.display.*;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 	import flash.text.*;
 import flash.ui.Keyboard;
 
-public class PaletteSelectorItem extends Sprite {
+import mx.core.mx_internal;
+
+use namespace mx_internal;
+
+[AccessibilityClass(implementation="access.PaletteSelectorItemAccImpl")]
+public class PaletteSelectorItem extends AccessibleComponent {
 
 	public var categoryID:int;
 	public var label:TextField;
 	public var isSelected:Boolean;
 
 	private var color:uint;
+
+    private var accClass:Class = PaletteSelectorItemAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
 
 	public function PaletteSelectorItem(id: int, s:String, c:uint) {
 		categoryID = id;
@@ -49,7 +58,28 @@ public class PaletteSelectorItem extends Sprite {
         this.tabIndex = 1;
 
         addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+        initializeAccessibility();
 	}
+
+	//--------------------------------------------------------------------------
+    //
+    //  Class mixins
+    //
+    //--------------------------------------------------------------------------
+    /**
+     *  Placeholder for mixin by IconButtonAccImpl.
+     */
+    mx_internal static var createAccessibilityImplementation:Function;
+
+
+    /**
+     *  @inheritDoc
+     */
+    override protected function initializeAccessibility():void
+    {
+        if (PaletteSelectorItem.createAccessibilityImplementation != null)
+            PaletteSelectorItem.createAccessibilityImplementation(this);
+    }
 
     public function keyDown(evt:KeyboardEvent):void {
         switch (evt.keyCode) {
