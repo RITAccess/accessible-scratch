@@ -151,8 +151,11 @@ public class BlockArg extends Sprite {
         switch (evt.keyCode) {
             case (Keyboard.ENTER):
             {
-                trace('hggggg');
-                this.startEditing();
+                if (this.type == 'c' || this.type == 'd' || this.type == 'm') {
+                    invokeMenu(new MouseEvent('dud'));
+                } else {
+                    this.startEditing();
+                }
                 evt.stopPropagation();
                 evt.preventDefault();
                 break;
