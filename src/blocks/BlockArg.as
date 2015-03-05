@@ -40,9 +40,9 @@ package blocks {
 	import flash.events.*;
 	import flash.filters.BevelFilter;
 	import flash.text.*;
-import flash.ui.Keyboard;
+    import flash.ui.Keyboard;
 
-import scratch.BlockMenus;
+    import scratch.BlockMenus;
 	import translation.Translator;
 	import util.Color;
 
@@ -148,18 +148,19 @@ public class BlockArg extends Sprite {
 	}
 
     public function keyDown(evt:KeyboardEvent):void {
+        if (field.type != TextFieldType.DYNAMIC) {
+            return;
+        }
         switch (evt.keyCode) {
             case (Keyboard.ENTER):
             {
-                if (!isEditable) {
-                    if (this.type == 'c' || this.type == 'd' || this.type == 'm') {
-                        invokeMenu(new MouseEvent('dud'));
-                    } else {
-                        this.startEditing();
-                    }
-                    evt.stopPropagation();
-                    evt.preventDefault();
+                if (this.type == 'c' || this.type == 'd' || this.type == 'm') {
+                    invokeMenu(new MouseEvent('dud'));
+                } else {
+                    this.startEditing();
                 }
+                evt.stopPropagation();
+                evt.preventDefault();
                 break;
             }
             default: {
