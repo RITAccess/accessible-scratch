@@ -40,7 +40,9 @@ package blocks {
 	import flash.events.*;
 	import flash.filters.BevelFilter;
 	import flash.text.*;
-	import scratch.BlockMenus;
+import flash.ui.Keyboard;
+
+import scratch.BlockMenus;
 	import translation.Translator;
 	import util.Color;
 
@@ -68,6 +70,9 @@ public class BlockArg extends Sprite {
 	//	none of the above - custom subclass of BlockArg
 	public function BlockArg(type:String, color:int, editable:Boolean = false, menuName:String = '') {
 		this.type = type;
+        this.tabIndex = 1;
+
+        addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 
 		if (color == -1) { // copy for clone; omit graphics
 			if ((type == 'd') || (type == 'n')) isNumber = true;
@@ -141,6 +146,22 @@ public class BlockArg extends Sprite {
 			base.redraw();
 		}
 	}
+
+    public function keyDown(evt:KeyboardEvent):void {
+        switch (evt.keyCode) {
+            case (Keyboard.ENTER):
+            {
+                trace('hggggg');
+                this.startEditing();
+                evt.stopPropagation();
+                evt.preventDefault();
+                break;
+            }
+            default: {
+
+            }
+        }
+    }
 
 	public function labelOrNull():String { return field ? field.text : null }
 
