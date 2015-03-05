@@ -333,7 +333,8 @@ public class BlockMenus implements DragClient {
 	private function notePicker(evt:MouseEvent):void {
 		var piano:Piano = new Piano(block.base.color, app.viewedObj().instrument, setBlockArg);
 		if (!isNaN(blockArg.argValue)) {
-			piano.selectNote(int(blockArg.argValue));
+            var n:int = int(blockArg.argValue);
+			piano.selectNote(n);
 		}
 		var p:Point = blockArg.localToGlobal(new Point(blockArg.width, blockArg.height));
 		piano.showOnStage(app.stage, int(p.x - piano.width / 2), p.y);
