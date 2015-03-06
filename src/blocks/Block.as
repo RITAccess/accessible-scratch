@@ -934,35 +934,32 @@ public class Block extends AccessibleComponent {
 					var appendFunction:Function = function():void {};
 					trace(self.parent);
 
-					switch (targetLocation) {
-						case (ROLE_NONE):
-						{
-							location = "after ";
-							if (target is Block) {
-								appendFunction = function():void {
-									if (self.parent is BlockPalette) {
-										(target as Block).insertBlock(self.duplicate(false, true));
-										Menu.removeMenusFrom(Scratch.app.stage);
-									}
-								};
-							}
-							break;
-						}
-						case (ROLE_ABSOLUTE):
-						{
-							location = "before ";
-							if (target is Block) {
-								appendFunction = function():void {
-									(target as Block).insertBlockAbove(self.duplicate(false, true));
-									Menu.removeMenusFrom(Scratch.app.stage);
-								};
-							}
-							break;
-						}
-					}
+                    if (target is Block) {
+                        switch (targetLocation) {
+                            case (ROLE_NONE):
+                            {
+                                location = "after ";
+                                appendFunction = function ():void {
+                                    if (self.parent is BlockPalette) {
+                                        (target as Block).insertBlock(self.duplicate(false, true));
+                                        Menu.removeMenusFrom(Scratch.app.stage);
+                                    }
+                                };
+                                break;
+                            }
+                            case (ROLE_ABSOLUTE):
+                            {
+                                location = "before ";
+                                appendFunction = function ():void {
+                                    (target as Block).insertBlockAbove(self.duplicate(false, true));
+                                    Menu.removeMenusFrom(Scratch.app.stage);
+                                };
+                                break;
+                            }
+                        }
 
-					m.addItem(location + target.getSummary(), appendFunction);
-
+                        m.addItem(location + target.getSummary(), appendFunction);
+                    }
 				});
 
 				m.showOnStage(Scratch.app.stage, this.x, this.y);
