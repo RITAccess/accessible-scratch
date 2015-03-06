@@ -927,11 +927,11 @@ public class Block extends AccessibleComponent {
             {
 				var m:Menu = new Menu();
 
-				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e) {
-					var target = e[1];
+				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e:*,e2:*,e3:*):void {
+					var target:Block = e[1];
 					var targetLocation:Number = e[2];
-					var location = "";
-					var appendFunction:Function = function() {};
+					var location:String = "";
+					var appendFunction:Function = function():void {};
 					trace(self.parent);
 
 					switch (targetLocation) {
@@ -939,7 +939,7 @@ public class Block extends AccessibleComponent {
 						{
 							location = "after ";
 							if (target is Block) {
-								appendFunction = function() {
+								appendFunction = function():void {
 									if (self.parent is BlockPalette) {
 										(target as Block).insertBlock(self.duplicate(false, true));
 										Menu.removeMenusFrom(Scratch.app.stage);
@@ -952,7 +952,7 @@ public class Block extends AccessibleComponent {
 						{
 							location = "before ";
 							if (target is Block) {
-								appendFunction = function() {
+								appendFunction = function():void {
 									(target as Block).insertBlockAbove(self.duplicate(false, true));
 									Menu.removeMenusFrom(Scratch.app.stage);
 								};
