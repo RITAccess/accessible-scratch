@@ -31,9 +31,9 @@ public class ZoomWidget extends Sprite {
 
 	public function ZoomWidget(scriptsPane:ScriptsPane) {
 		this.scriptsPane = scriptsPane;
-		addChild(smaller = new IconButton(zoomOut, 'zoomOut'));
-		addChild(normal = new IconButton(noZoom, 'noZoom'));
-		addChild(bigger = new IconButton(zoomIn, 'zoomIn'));
+		addChild(smaller = new IconButton(zoomOut, 'zoomOut', null, false, 'zoom out'));
+		addChild(normal = new IconButton(noZoom, 'noZoom', null, false, 'reset zoom'));
+		addChild(bigger = new IconButton(zoomIn, 'zoomIn', null, false, 'zoom in'));
 		smaller.x = 0;
 		normal.x = 24;
 		bigger.x = 48;

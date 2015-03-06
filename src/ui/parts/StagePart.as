@@ -304,10 +304,10 @@ public class StagePart extends UIPart {
 	private function addRunStopButtons():void {
 		function startAll(b:IconButton):void { playButtonPressed(b.lastEvent) }
 		function stopAll(b:IconButton):void { app.runtime.stopAll() }
-		runButton = new IconButton(startAll, 'greenflag');
+		runButton = new IconButton(startAll, 'greenflag', null, false, '@ start');
 		runButton.actOnMouseUp();
 		addChild(runButton);
-		stopButton = new IconButton(stopAll, 'stop');
+		stopButton = new IconButton(stopAll, 'stop', null, false, 'stop');
 		addChild(stopButton);
 	}
 
@@ -316,7 +316,7 @@ public class StagePart extends UIPart {
 			app.setPresentationMode(b.isOn());
 			drawOutline();
 		}
-		fullscreenButton = new IconButton(toggleFullscreen, 'fullscreen');
+		fullscreenButton = new IconButton(toggleFullscreen, 'fullscreen', null, false, 'go fullscreen');
 		fullscreenButton.disableMouseover();
 		addChild(fullscreenButton);
 	}

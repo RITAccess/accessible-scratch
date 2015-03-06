@@ -267,7 +267,7 @@ public class MediaInfo extends Sprite {
 
 	public function addDeleteButton():void {
 		removeDeleteButton();
-		deleteButton = new IconButton(deleteMe, Resources.createBmp('removeItem'));
+		deleteButton = new IconButton(deleteMe, Resources.createBmp('removeItem'), null, false, 'delete item');
 		deleteButton.x = frame.width - deleteButton.width + 5;
 		deleteButton.y = 3;
 		deleteButton.visible = false;

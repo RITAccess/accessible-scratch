@@ -173,13 +173,13 @@ public class SoundsPart extends UIPart {
 	private function addNewSoundButtons():void {
 		var left:int = 16;
 		var buttonY:int = 31;
-		addChild(libraryButton = makeButton(soundFromLibrary, 'soundlibrary', left, buttonY));
-		addChild(recordButton = makeButton(recordSound, 'record', left + 34, buttonY));
-		addChild(importButton = makeButton(soundFromComputer, 'import', left + 61, buttonY - 1));
+		addChild(libraryButton = makeButton(soundFromLibrary, 'soundlibrary', left, buttonY, 'sound library'));
+		addChild(recordButton = makeButton(recordSound, 'record', left + 34, buttonY, 'record a new sound'));
+		addChild(importButton = makeButton(soundFromComputer, 'import', left + 61, buttonY - 1, 'import a sound'));
 	}
 
-	private function makeButton(fcn:Function, iconName:String, x:int, y:int):IconButton {
-		var b:IconButton = new IconButton(fcn, iconName);
+	private function makeButton(fcn:Function, iconName:String, x:int, y:int, narrationText:String = null):IconButton {
+		var b:IconButton = new IconButton(fcn, iconName, null, false, narrationText);
 		b.isMomentary = true;
 		b.x = x;
 		b.y = y;
@@ -211,8 +211,8 @@ public class SoundsPart extends UIPart {
 	//------------------------------
 
 	private function addUndoButtons():void {
-		addChild(undoButton = new IconButton(editor.waveform.undo, makeButtonImg('undo', true), makeButtonImg('undo', false)));
-		addChild(redoButton = new IconButton(editor.waveform.redo, makeButtonImg('redo', true), makeButtonImg('redo', false)));
+		addChild(undoButton = new IconButton(editor.waveform.undo, makeButtonImg('undo', true), makeButtonImg('undo', false), false, 'undo'));
+		addChild(redoButton = new IconButton(editor.waveform.redo, makeButtonImg('redo', true), makeButtonImg('redo', false), false, 'redo'));
 		undoButton.isMomentary = true;
 		redoButton.isMomentary = true;
 	}

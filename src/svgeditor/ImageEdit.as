@@ -26,8 +26,9 @@ package svgeditor {
 	import flash.text.*;
 	import flash.ui.*;
 	import flash.utils.ByteArray;
+import flash.utils.Dictionary;
 
-	import scratch.*;
+import scratch.*;
 
 	import svgeditor.*;
 	import svgeditor.objs.*;
@@ -341,6 +342,15 @@ package svgeditor {
 			var ib:IconButton;
 			var dy:Number = 0;
 			var ttDirection:String = (this is SVGEdit ? 'left' : 'right');
+            var niceToolNames:Object = {
+                'bitmapBrush': 'brush tool',
+                'bitmapEraser': 'eraser tool',
+                'bitmapSelect': 'select tool',
+                'ellipse': 'ellipse tool',
+                'paintbucket': 'paint bucket tool',
+                'rect': 'rectangle tool',
+                'text': 'text tool'
+            };
 			for (var i:int=0; i< tools.length; ++i) {
 				if (tools[i] == null) dy += extraSpace;
 				else {
@@ -359,7 +369,8 @@ package svgeditor {
 						isImmediate ? handleImmediateTool : selectTool,
 						makeToolButton(iconName, true, buttonSize),
 						makeToolButton(iconName, false, buttonSize),
-						!isImmediate);
+						!isImmediate,
+                        niceToolNames[toolName]);
 					registerToolButton(toolName, ib);
 					ib.isMomentary = isImmediate;
 					toolButtonsLayer.addChild(ib);

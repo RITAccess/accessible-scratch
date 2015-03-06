@@ -27,6 +27,7 @@ package ui.parts {
 	import flash.text.*;
 	import translation.Translator;
 	import uiwidgets.IconButton;
+    import mx.accessibility.AccConst;
 
 public class TabsPart extends UIPart {
 
@@ -43,6 +44,9 @@ public class TabsPart extends UIPart {
 		scriptsTab = makeTab('Scripts', selectScripts);
 		imagesTab = makeTab('Images', selectImages); // changed to 'Costumes' or 'Scenes' by refresh()
 		soundsTab = makeTab('Sounds', selectSounds);
+        scriptsTab.role = AccConst.ROLE_SYSTEM_PAGETAB;
+        imagesTab.role = AccConst.ROLE_SYSTEM_PAGETAB;
+        soundsTab.role = AccConst.ROLE_SYSTEM_PAGETAB;
 		addChild(scriptsTab);
 		addChild(imagesTab);
 		addChild(soundsTab);
@@ -86,7 +90,7 @@ public class TabsPart extends UIPart {
 	}
 
 	private function makeTab(label:String, action:Function):IconButton {
-		return new IconButton(action, makeTabImg(label, true), makeTabImg(label, false), true);
+		return new IconButton(action, makeTabImg(label, true), makeTabImg(label, false), true, label);
 	}
 
 	private function makeTabImg(label:String, isSelected:Boolean):Sprite {

@@ -41,7 +41,7 @@ public class ListCell extends Sprite {
 		addChild(frame);
 		addTextField(whenChanged, keyPress);
 		tf.text = s;
-		deleteButton = new IconButton(deleteItem, 'deleteItem');
+		deleteButton = new IconButton(deleteItem, 'deleteItem', null, false, 'delete item');
 		setWidth(width);
 	}
 

@@ -23,18 +23,29 @@
 // A single menu item for Menu.as.
 
 package uiwidgets {
-	import flash.display.*;
+import access.MenuItemAccImpl;
+
+import flash.display.*;
+import flash.events.Event;
 import flash.events.FocusEvent;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 	import flash.text.*;
 import flash.ui.Keyboard;
 
+import mx.core.mx_internal;
+
 import scratch.BlockMenus;
 	import translation.Translator;
-	import util.Color;
 
-public class MenuItem extends Sprite {
+import ui.AccessibleComponent;
+
+import util.Color;
+
+use namespace mx_internal;
+
+[AccessibilityClass(implementation="access.MenuItemAccImpl")]
+public class MenuItem extends AccessibleComponent {
 
 	private const leftMargin:int = 22;
 	private const rightMargin:int = 10;
@@ -44,12 +55,14 @@ public class MenuItem extends Sprite {
 	private var label:TextField; // if label is null, this item is a divider line
 	private var checkmark:Shape;
 	private var selection:*;
+    private var enabled:Boolean;
 
 	private var base:Shape;
 	private var w:int, h:int;
 
 	public function MenuItem(menu:Menu, labelText:*, selection:*, enabled:Boolean) {
 		this.menu = menu;
+        this.enabled = enabled;
 		this.selection = (selection == null) ? labelText : selection;
 		addChild(base = new Shape());
 		if (labelText == Menu.line) return;
@@ -65,7 +78,31 @@ public class MenuItem extends Sprite {
             addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 		}
         this.tabIndex = 1;
-	}
+        initializeAccessibility();
+    }
+
+    public function isEnabled():Boolean { return enabled; }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class mixins
+    //
+    //--------------------------------------------------------------------------
+    private var accClass:Class = MenuItemAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
+    /**
+     *  Placeholder for mixin by IconButtonAccImpl.
+     */
+    mx_internal static var createAccessibilityImplementation:Function;
+
+
+    /**
+     *  @inheritDoc
+     */
+    override protected function initializeAccessibility():void
+    {
+        if (MenuItem.createAccessibilityImplementation != null)
+            MenuItem.createAccessibilityImplementation(this);
+    }
 
 
     /* Events */
@@ -177,8 +214,8 @@ public class MenuItem extends Sprite {
 		return Color.fromHSV(hsv[0], hsv[1], brightness);
 	}
 
-	private function mouseOver(evt):void { setHighlight(true) }
-	private function mouseOut(evt):void { setHighlight(false) }
-	private function mouseUp(evt):void { menu.selected(selection) }
+	private function mouseOver(evt:Event):void { setHighlight(true) }
+	private function mouseOut(evt:Event):void { setHighlight(false) }
+	private function mouseUp(evt:Event):void { menu.selected(selection) }
 
 }}

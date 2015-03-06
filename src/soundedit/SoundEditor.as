@@ -127,9 +127,9 @@ public class SoundEditor extends Sprite {
 	}
 
 	private function addControls():void {
-		playButton = new IconButton(waveform.startPlaying, 'playSnd', null, true);
-		stopButton = new IconButton(waveform.stopAll, 'stopSnd', null, true);
-		recordButton = new IconButton(waveform.toggleRecording, 'recordSnd', null, true);
+		playButton = new IconButton(waveform.startPlaying, 'playSnd', null, true, 'play sound');
+		stopButton = new IconButton(waveform.stopAll, 'stopSnd', null, true, 'stop all sounds');
+		recordButton = new IconButton(waveform.toggleRecording, 'recordSnd', null, true, 'toggle recording');
 
 		buttons = [playButton, stopButton, recordButton];
 		for each (var b:IconButton in buttons) {

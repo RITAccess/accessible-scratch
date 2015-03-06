@@ -86,7 +86,7 @@ public class ListWatcher extends Sprite {
 		scrollbar = new Scrollbar(10, 10, scrollToFraction);
 		addChild(scrollbar);
 
-		addItemButton = new IconButton(addItem, 'addItem');
+		addItemButton = new IconButton(addItem, 'addItem', null, false, 'add item');
 		addChild(addItemButton);
 
 		elementCount = createTextField(Translator.map('length') + ': 0', cellNumFont);

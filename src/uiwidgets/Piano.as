@@ -4,8 +4,9 @@ package uiwidgets {
 	import flash.filters.*;
 	import flash.geom.*;
 	import flash.text.*;
+import flash.ui.Keyboard;
 
-	import sound.*;
+import sound.*;
 	import translation.*;
 
 public class Piano extends Sprite {
@@ -14,15 +15,12 @@ public class Piano extends Sprite {
 	private var instrument:int;
 	private var callback:Function;
 
-	private var selectedKey:PianoKey;
-	private var selectedNote:int;
-	private var hasSelection:Boolean;
+    private var selectedKey:int;
 
 	private var keys:Array = [];
 	private var shape:Shape;
 	private var label:TextField;
 
-	private var mousePressed:Boolean;
 	private var notePlayer:NotePlayer;
 
 	public function Piano(color:int, instrument:int = 0, callback:Function = null, firstKey:int = 48, lastKey:int = 72) {
@@ -32,7 +30,6 @@ public class Piano extends Sprite {
 		addShape();
 		addLabel();
 		addKeys(firstKey, lastKey);
-		addEventListeners();
 		fixLayout();
 	}
 
@@ -56,104 +53,15 @@ public class Piano extends Sprite {
 	}
 
 	private function addKey(n:int):void {
-		var key:PianoKey = new PianoKey(n);
+		var key:PianoKey = new PianoKey(n, this);
 		addChild(key);
 		keys.push(key);
 	}
 
-	private function addEventListeners():void {
-		addEventListener(MouseEvent.MOUSE_DOWN, pianoMouseDown);
-	}
-
-	private function addStageEventListeners():void {
-		stage.addEventListener(MouseEvent.MOUSE_MOVE, stageMouseMove);
-		stage.addEventListener(MouseEvent.MOUSE_UP, stageMouseUp);
-		stage.addEventListener(MouseEvent.MOUSE_DOWN, stageMouseDown, true);
-	}
-
-	private function removeStageEventListeners():void {
-		stage.removeEventListener(MouseEvent.MOUSE_MOVE, stageMouseMove);
-		stage.removeEventListener(MouseEvent.MOUSE_UP, stageMouseUp);
-		stage.removeEventListener(MouseEvent.MOUSE_DOWN, stageMouseDown, true);
-	}
-
-	private function pianoMouseDown(e:MouseEvent):void {
-		mousePressed = true;
-		deselect();
-		updateKey(e);
-	}
-
-	private function stageMouseDown(e:MouseEvent):void {
-		var t:DisplayObject = e.target as DisplayObject;
-		while (t) {
-			if (t is Piano) return;
-			t = t.parent;
-		}
-		hide();
-	}
-
-	private function stageMouseMove(e:MouseEvent):void {
-		updateKey(e);
-	}
-
-	private function stageMouseUp(e:MouseEvent):void {
-		if (mousePressed) {
-			if (callback != null && hasSelection) callback(selectedNote);
-			hide();
-		}
-	}
-
-	private function updateKey(e:MouseEvent):void {
-		var objects:Array = getObjectsUnderPoint(new Point(e.stageX, e.stageY));
-		for each (var o:DisplayObject in objects.reverse()) {
-			if (o is PianoKey) {
-				var n:int = PianoKey(o).note;
-				if (!mousePressed) {
-					setLabel(getNoteLabel(n));
-					return;
-				}
-				if (isNoteSelected(n)) return;
-				selectNote(n);
-				playSoundForNote(n);
-				return;
-			}
-		}
-		if (mousePressed) deselect();
-	}
-
 	public function selectNote(n:int):void {
-		if (isNoteSelected(n)) return;
-		deselect();
-		hasSelection = true;
-		selectedNote = n;
+        selectedKey = n;
 		setLabel(getNoteLabel(n));
-		selectKeyForNote(n);
-	}
-
-	public function deselect():void {
-		hasSelection = false;
-		deselectKey();
-	}
-
-	public function isNoteSelected(n:int):Boolean {
-		return hasSelection && selectedNote === n;
-	}
-
-	private function deselectKey():void {
-		if (selectedKey) {
-			selectedKey.deselect();
-			selectedKey = null;
-		}
-	}
-
-	private function selectKeyForNote(n:int):void {
-		for each (var k:PianoKey in keys) {
-			if (k.note === n) {
-				selectedKey = k;
-				k.select();
-				return;
-			}
-		}
+        playSoundForNote(n);
 	}
 
 	private function stopPlaying():void {
@@ -163,7 +71,7 @@ public class Piano extends Sprite {
 		}
 	}
 
-	private function playSoundForNote(n:int):void {
+	public function playSoundForNote(n:int):void {
 		stopPlaying();
 		notePlayer = SoundBank.getNotePlayer(instrument, n);
 		if (!notePlayer) return;
@@ -171,17 +79,36 @@ public class Piano extends Sprite {
 		notePlayer.startPlaying();
 	}
 
+    public function finalize(key:PianoKey):void {
+        callback(key.note);
+        hide();
+    }
+
+    private function getKey(n:int):PianoKey {
+        for each (var key:PianoKey in keys) {
+            if (key.note == n) {
+                return key;
+            }
+        }
+        return null;
+    }
+
 	public function showOnStage(s:Stage, x:Number = NaN, y:Number = NaN):void {
 		addShadowFilter();
 		this.x = int(x === x ? x : s.mouseX);
 		this.y = int(y === y ? y : s.mouseY);
 		s.addChild(this);
-		addStageEventListeners();
+        s.focus = getKey(selectedKey);
+        s.addEventListener(KeyboardEvent.KEY_DOWN, function(evt:KeyboardEvent):void {
+            if (evt.keyCode == Keyboard.ESCAPE) {
+                s.removeEventListener(KeyboardEvent.KEY_DOWN, arguments.callee);
+                hide();
+            }
+        })
 	}
 
 	public function hide():void {
 		if (!stage) return;
-		removeStageEventListeners();
 		stage.removeChild(this);
 	}
 
@@ -259,6 +186,12 @@ public class Piano extends Sprite {
 }}
 
 import flash.display.*;
+import flash.events.Event;
+import flash.events.FocusEvent;
+import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
+import flash.ui.Keyboard;
+
 import uiwidgets.*;
 
 class PianoKey extends Sprite {
@@ -271,12 +204,36 @@ class PianoKey extends Sprite {
 	public var note:int;
 	public var isBlack:Boolean;
 	public var isSelected:Boolean;
+    public var piano:Piano;
 
-	public function PianoKey(n:int) {
+	public function PianoKey(n:int, parent:Piano) {
 		note = n;
+        piano = parent;
 		isBlack = Piano.isBlack(n);
+        this.tabIndex = 1;
 		redraw();
+        var self:PianoKey = this;
+        addEventListener(FocusEvent.FOCUS_IN, handleFocus);
+        addEventListener(FocusEvent.FOCUS_OUT, handleUnfocus);
+        addEventListener(MouseEvent.MOUSE_OVER, handleFocus);
+        addEventListener(MouseEvent.MOUSE_OUT, handleUnfocus);
+        addEventListener(KeyboardEvent.KEY_DOWN, function(evt:KeyboardEvent):void {
+            if (evt.keyCode == Keyboard.ENTER) {
+                piano.finalize(self);
+            }
+        });
+        addEventListener(MouseEvent.MOUSE_DOWN, function(evt:MouseEvent):void {
+            piano.finalize(self);
+        });
 	}
+
+    private function handleUnfocus(evt:Event):void {
+        deselect();
+    }
+
+    private function handleFocus(evt:Event):void {
+        select();
+    }
 
 	public function select():void {
 		setSelected(true);
@@ -288,6 +245,8 @@ class PianoKey extends Sprite {
 
 	public function setSelected(flag:Boolean):void {
 		isSelected = flag;
+        if (flag)
+            piano.selectNote(note);
 		redraw();
 	}
 

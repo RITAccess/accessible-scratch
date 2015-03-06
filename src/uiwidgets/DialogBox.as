@@ -138,8 +138,8 @@ public class DialogBox extends Sprite {
 		var l:TextField = makeLabel(Translator.map(fieldName) + ':');
 		addChild(l);
 		var f:IconButton = isRadioButton ?
-			new IconButton(null, null, null, true) :
-			new IconButton(null, getCheckMark(true), getCheckMark(false));
+			new IconButton(null, null, null, true, Translator.map(fieldName)) :
+			new IconButton(null, getCheckMark(true), getCheckMark(false), false, Translator.map(fieldName));
 		if (defaultValue) f.turnOn(); else f.turnOff();
 		addChild(f);
 		booleanFields[fieldName] = f;

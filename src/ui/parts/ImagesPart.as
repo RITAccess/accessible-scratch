@@ -212,11 +212,11 @@ public class ImagesPart extends UIPart {
 	private function addNewCostumeButtons():void {
 		var left:int = 8;
 		var buttonY:int = 32;
-		addChild(backdropLibraryButton = makeButton(costumeFromLibrary, 'landscape', left, buttonY + 1));
-		addChild(costumeLibraryButton = makeButton(costumeFromLibrary, 'library', left + 1, buttonY - 2));
-		addChild(paintButton = makeButton(paintCostume, 'paintbrush', left + 23, buttonY - 1));
-		addChild(importButton = makeButton(costumeFromComputer, 'import', left + 44, buttonY - 2));
-		addChild(cameraButton = makeButton(costumeFromCamera, 'camera', left + 72, buttonY));
+		addChild(backdropLibraryButton = makeButton(costumeFromLibrary, 'landscape', left, buttonY + 1, 'backdrop library'));
+		addChild(costumeLibraryButton = makeButton(costumeFromLibrary, 'library', left + 1, buttonY - 2, 'costume library'));
+		addChild(paintButton = makeButton(paintCostume, 'paintbrush', left + 23, buttonY - 1, 'paint'));
+		addChild(importButton = makeButton(costumeFromComputer, 'import', left + 44, buttonY - 2, 'import'));
+		addChild(cameraButton = makeButton(costumeFromCamera, 'camera', left + 72, buttonY, 'camera'));
 	}
 
 	public function useBitmapEditor(flag:Boolean):void {
@@ -269,20 +269,21 @@ public class ImagesPart extends UIPart {
 	// Button Creation
 	//------------------------------
 
-	private function makeButton(fcn:Function, iconName:String, x:int, y:int):IconButton {
-		var b:IconButton = new IconButton(fcn, iconName);
+	private function makeButton(fcn:Function, iconName:String, x:int, y:int, narrationText:String = null):IconButton {
+		var b:IconButton = new IconButton(fcn, iconName, null, false, narrationText);
 		b.isMomentary = true;
 		b.x = x;
 		b.y = y;
 		return b;
 	}
 
-	private function makeTopButton(fcn:Function, iconName:String, isRadioButton:Boolean = false):IconButton {
+	private function makeTopButton(fcn:Function, iconName:String, isRadioButton:Boolean = false, narrationText:String = null):IconButton {
 		return new IconButton(
 			fcn,
 			SoundsPart.makeButtonImg(iconName, true, topButtonSize),
 			SoundsPart.makeButtonImg(iconName, false, topButtonSize),
-			isRadioButton);
+			isRadioButton,
+            narrationText);
 	}
 
 	// -----------------------------
@@ -382,8 +383,8 @@ public class ImagesPart extends UIPart {
 	//------------------------------
 
 	private function addFlipButtons():void {
-		addChild(flipHButton = makeTopButton(flipH, 'flipH'));
-		addChild(flipVButton = makeTopButton(flipV,'flipV'));
+		addChild(flipHButton = makeTopButton(flipH, 'flipH', false, 'flip costume horizontally'));
+		addChild(flipVButton = makeTopButton(flipV,'flipV', false, 'flip costume vertically'));
 		flipHButton.isMomentary = true;
 		flipVButton.isMomentary = true;
 		SimpleTooltips.add(flipHButton, {text: 'Flip left-right', direction: 'bottom'});
@@ -398,7 +399,7 @@ public class ImagesPart extends UIPart {
 			editor.setToolMode('setCenter');
 			b.lastEvent.stopPropagation();
 		}
-		centerButton = makeTopButton(setCostumeCenter, 'setCenter', true);
+		centerButton = makeTopButton(setCostumeCenter, 'setCenter', true, 'set costume center');
 		SimpleTooltips.add(centerButton, {text: 'Set costume center', direction: 'bottom'});
 		editor.registerToolButton('setCenter', centerButton);
 		addChild(centerButton);

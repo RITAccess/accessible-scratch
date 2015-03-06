@@ -86,7 +86,7 @@ public class SpriteThumbnail extends Sprite {
 		return ['backdrop', 'backdrops', 'hide', 'show', 'Stage'] }
 
 	private function addDetailsButton():void {
-		detailsButton = new IconButton(showSpriteDetails, 'spriteInfo');
+		detailsButton = new IconButton(showSpriteDetails, 'spriteInfo', null, false, 'sprite details');
 		detailsButton.x = detailsButton.y = -2;
 		detailsButton.isMomentary = true;
 		detailsButton.visible = false;

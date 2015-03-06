@@ -36,24 +36,38 @@ import flash.events.MouseEvent;
 	import assets.Resources;
 
 import flash.ui.Keyboard;
+import access.IconButtonAccImpl;
+import mx.accessibility.AccConst;
 
-public class IconButton extends Sprite {
+import mx.core.mx_internal;
+
+import ui.AccessibleComponent;
+
+use namespace mx_internal;
+
+[AccessibilityClass(implementation="access.IconButtonAccImpl")]
+public class IconButton extends AccessibleComponent {
 
 	public var clickFunction:Function;
 	public var isRadioButton:Boolean; // if true then other button children of my parent will be turned off when I'm turned on
 	public var isMomentary:Boolean; // if true then button does not remain on when clicked
 	public var lastEvent:MouseEvent;
 	public var clientData:*;
+    public var role:uint;
 
 	private var buttonIsOn:Boolean;
-	private var mouseIsOver:Boolean;
+    private var mouseIsOver:Boolean;
 	private var onImage:DisplayObject;
 	private var offImage:DisplayObject;
 
-	public function IconButton(clickFunction:Function, onImageOrName:*, offImageObj:DisplayObject = null, isRadioButton:Boolean = false) {
+    private var accClass:Class = IconButtonAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
+
+	public function IconButton(clickFunction:Function, onImageOrName:*, offImageObj:DisplayObject = null, isRadioButton:Boolean = false, narrationText:String = null) {
 		this.clickFunction = clickFunction;
 		this.isRadioButton = isRadioButton;
         this.tabIndex = 1;
+        this.name = (narrationText != null) ? narrationText : (onImageOrName is String ? onImageOrName as String : 'icon');
+        this.role = AccConst.ROLE_SYSTEM_PUSHBUTTON;
 		useDefaultImages();
 		setImage(onImageOrName, offImageObj);
 		addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
@@ -61,7 +75,29 @@ public class IconButton extends Sprite {
 		addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
 		mouseChildren = false;
         addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+        initialize();
     }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class mixins
+    //
+    //--------------------------------------------------------------------------
+    /**
+     *  Placeholder for mixin by IconButtonAccImpl.
+     */
+    mx_internal static var createAccessibilityImplementation:Function;
+
+
+    /**
+     *  @inheritDoc
+     */
+    override protected function initializeAccessibility():void
+    {
+        if (IconButton.createAccessibilityImplementation != null)
+            IconButton.createAccessibilityImplementation(this);
+    }
+
 
     public function keyDown(evt:KeyboardEvent):void {
         switch (evt.keyCode) {

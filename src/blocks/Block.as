@@ -31,29 +31,29 @@
 // sequence from a specification string (e.g. "%n + %n") and type (e.g. reporter).
 
 package blocks {
-
-import flash.accessibility.AccessibilityProperties;
-
-
-import flash.display.*;
+    import access.BlockAccImpl;
+    import extensions.ExtensionManager;
+    import flash.accessibility.AccessibilityProperties;
+    import flash.display.*;
 	import flash.events.*;
 	import flash.filters.GlowFilter;
 	import flash.geom.*;
 	import flash.net.URLLoader;
 	import flash.text.*;
 	import assets.Resources;
-
-import flash.ui.Keyboard;
-
-import translation.Translator;
-
-import ui.BlockPalette;
-
-import util.*;
+    import flash.ui.Keyboard;
+    import mx.core.mx_internal;
+    import translation.Translator;
+    import ui.AccessibleComponent;
+    import ui.BlockPalette;
+    import util.*;
 	import uiwidgets.*;
 	import scratch.*;
 
-public class Block extends Sprite {
+use namespace mx_internal;
+
+[AccessibilityClass(implementation="access.BlockAccImpl")]
+public class Block extends AccessibleComponent {
 
 	private const minCommandWidth:int = 36;
 	private const minHatWidth:int = 80;
@@ -185,7 +185,30 @@ public class Block extends Sprite {
 
 		addEventListener(FocusEvent.KEY_FOCUS_CHANGE, focusChange);
 		addEventListener(KeyboardEvent.KEY_UP, keyDown);
-	}
+        initializeAccessibility();
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class mixins
+    //
+    //--------------------------------------------------------------------------
+    private var accClass:Class = BlockAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
+    /**
+     *  Placeholder for mixin by IconButtonAccImpl.
+     */
+    mx_internal static var createAccessibilityImplementation:Function;
+
+
+    /**
+     *  @inheritDoc
+     */
+    override protected function initializeAccessibility():void
+    {
+        if (Block.createAccessibilityImplementation != null)
+            Block.createAccessibilityImplementation(this);
+    }
+
 
 	public function setSpec(newSpec:String, defaultArgs:Array = null):void {
 		for each (var o:DisplayObject in labelsAndArgs) {
@@ -904,11 +927,11 @@ public class Block extends Sprite {
             {
 				var m:Menu = new Menu();
 
-				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e) {
-					var target = e[1];
+				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e:*,e2:*,e3:*):void {
+					var target:* = e[1];
 					var targetLocation:Number = e[2];
-					var location = "";
-					var appendFunction:Function = function() {};
+					var location:String = "";
+					var appendFunction:Function = function():void {};
 					trace(self.parent);
 
 					switch (targetLocation) {
@@ -916,7 +939,7 @@ public class Block extends Sprite {
 						{
 							location = "after ";
 							if (target is Block) {
-								appendFunction = function() {
+								appendFunction = function():void {
 									if (self.parent is BlockPalette) {
 										(target as Block).insertBlock(self.duplicate(false, true));
 										Menu.removeMenusFrom(Scratch.app.stage);
@@ -929,7 +952,7 @@ public class Block extends Sprite {
 						{
 							location = "before ";
 							if (target is Block) {
-								appendFunction = function() {
+								appendFunction = function():void {
 									(target as Block).insertBlockAbove(self.duplicate(false, true));
 									Menu.removeMenusFrom(Scratch.app.stage);
 								};

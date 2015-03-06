@@ -106,7 +106,7 @@ public class SpriteInfoPart extends UIPart implements DragClient {
 	}
 
 	private function addParts():void {
-		addChild(closeButton = new IconButton(closeSpriteInfo, 'backarrow'));
+		addChild(closeButton = new IconButton(closeSpriteInfo, 'backarrow', null, false, 'close dialog'));
 		closeButton.isMomentary = true;
 
 		addChild(spriteName = new EditableLabel(nameChanged));
@@ -127,17 +127,17 @@ public class SpriteInfoPart extends UIPart implements DragClient {
 
 		addChild(rotationStyleLabel = makeLabel('', readoutLabelFormat));
 		rotationStyleButtons = [
-			new IconButton(rotate360, 'rotate360', null, true),
-			new IconButton(rotateFlip, 'flip', null, true),
-			new IconButton(rotateNone, 'norotation', null, true)];
+			new IconButton(rotate360, 'rotate360', null, true, 'rotate'),
+			new IconButton(rotateFlip, 'flip', null, true, 'flip'),
+			new IconButton(rotateNone, 'norotation', null, true, 'no rotation')];
 		for each (var b:IconButton in rotationStyleButtons) addChild(b);
 
 		addChild(draggableLabel = makeLabel('', readoutLabelFormat));
-		addChild(draggableButton = new IconButton(toggleLock, 'checkbox'));
+		addChild(draggableButton = new IconButtonCheckbox(toggleLock));
 		draggableButton.disableMouseover();
 
 		addChild(showSpriteLabel = makeLabel('', readoutLabelFormat));
-		addChild(showSpriteButton = new IconButton(toggleShowSprite, 'checkbox'));
+		addChild(showSpriteButton = new IconButtonCheckbox(toggleShowSprite));
 		showSpriteButton.disableMouseover();
 	}
 
