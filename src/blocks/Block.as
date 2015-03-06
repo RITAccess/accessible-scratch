@@ -115,9 +115,9 @@ public class Block extends Sprite {
 
 	public function Block(spec:String, type:String = " ", color:int = 0xD00000, op:* = 0, defaultArgs:Array = null) {
 		this.spec = Translator.map(spec);
-		this.accessibilityProperties = new AccessibilityProperties();
-		var pattern:RegExp = /\ %m\.(\S*)/g;
-		this.accessibilityProperties.name = this.spec.replace(pattern, " \"argument $1\"");
+//		this.accessibilityProperties = new AccessibilityProperties();
+//		var pattern:RegExp = /\ %m\.(\S*)/g;
+//		this.accessibilityProperties.name = this.spec.replace(pattern, " \"argument $1\"");
 		this.type = type;
 		this.op = op;
 
@@ -902,8 +902,6 @@ public class Block extends Sprite {
             }
             case (Keyboard.SPACE):
             {
-				trace("you hit the spacebar!");
-
 				var m:Menu = new Menu();
 
 				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e) {
@@ -940,7 +938,7 @@ public class Block extends Sprite {
 						}
 					}
 
-					m.addItem(location + target.accessibilityProperties.name, appendFunction);
+					m.addItem(location + target.getSummary(), appendFunction);
 
 				});
 
