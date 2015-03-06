@@ -31,28 +31,22 @@
 // sequence from a specification string (e.g. "%n + %n") and type (e.g. reporter).
 
 package blocks {
-import access.BlockAccImpl;
-
-import extensions.ExtensionManager;
-
-
-import flash.display.*;
+    import access.BlockAccImpl;
+    import extensions.ExtensionManager;
+    import flash.accessibility.AccessibilityProperties;
+    import flash.display.*;
 	import flash.events.*;
 	import flash.filters.GlowFilter;
 	import flash.geom.*;
 	import flash.net.URLLoader;
 	import flash.text.*;
 	import assets.Resources;
-
-import flash.ui.Keyboard;
-
-import mx.core.mx_internal;
-
-import translation.Translator;
-
-import ui.AccessibleComponent;
-
-import util.*;
+    import flash.ui.Keyboard;
+    import mx.core.mx_internal;
+    import translation.Translator;
+    import ui.AccessibleComponent;
+    import ui.BlockPalette;
+    import util.*;
 	import uiwidgets.*;
 	import scratch.*;
 
@@ -121,6 +115,9 @@ public class Block extends AccessibleComponent {
 
 	public function Block(spec:String, type:String = " ", color:int = 0xD00000, op:* = 0, defaultArgs:Array = null) {
 		this.spec = Translator.map(spec);
+//		this.accessibilityProperties = new AccessibilityProperties();
+//		var pattern:RegExp = /\ %m\.(\S*)/g;
+//		this.accessibilityProperties.name = this.spec.replace(pattern, " \"argument $1\"");
 		this.type = type;
 		this.op = op;
 
@@ -918,6 +915,7 @@ public class Block extends AccessibleComponent {
 	/* Events */
 
 	public function keyDown(evt:KeyboardEvent):void {
+		var self:Block = this;
 		switch (evt.keyCode) {
             case (Keyboard.ENTER):
             {
@@ -927,7 +925,48 @@ public class Block extends AccessibleComponent {
             }
             case (Keyboard.SPACE):
             {
-                //TODO: Engage targeting menu
+				var m:Menu = new Menu();
+
+				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e) {
+					var target = e[1];
+					var targetLocation:Number = e[2];
+					var location = "";
+					var appendFunction:Function = function() {};
+					trace(self.parent);
+
+					switch (targetLocation) {
+						case (ROLE_NONE):
+						{
+							location = "after ";
+							if (target is Block) {
+								appendFunction = function() {
+									if (self.parent is BlockPalette) {
+										(target as Block).insertBlock(self.duplicate(false, true));
+										Menu.removeMenusFrom(Scratch.app.stage);
+									}
+								};
+							}
+							break;
+						}
+						case (ROLE_ABSOLUTE):
+						{
+							location = "before ";
+							if (target is Block) {
+								appendFunction = function() {
+									(target as Block).insertBlockAbove(self.duplicate(false, true));
+									Menu.removeMenusFrom(Scratch.app.stage);
+								};
+							}
+							break;
+						}
+					}
+
+					m.addItem(location + target.getSummary(), appendFunction);
+
+				});
+
+				m.showOnStage(Scratch.app.stage, this.x, this.y);
+
                 evt.preventDefault();
                 break;
             }
