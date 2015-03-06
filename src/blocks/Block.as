@@ -928,7 +928,7 @@ public class Block extends AccessibleComponent {
 				var m:Menu = new Menu();
 
 				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e:*,e2:*,e3:*):void {
-					var target:Block = e[1];
+					var target:* = e[1];
 					var targetLocation:Number = e[2];
 					var location:String = "";
 					var appendFunction:Function = function():void {};
