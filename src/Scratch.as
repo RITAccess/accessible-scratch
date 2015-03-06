@@ -60,7 +60,7 @@ import watchers.ListWatcher;
 
 public class Scratch extends Sprite {
 	// Version
-	public static const versionString:String = 'v432';
+	public static const versionString:String = 'v433';
 	public static var app:Scratch; // static reference to the app, used for debugging
 
 	// Display modes
@@ -72,6 +72,7 @@ public class Scratch extends Sprite {
 	public var render3D:IRenderIn3D;
 	public var isArmCPU:Boolean;
 	public var jsEnabled:Boolean = false; // true when the SWF can talk to the webpage
+	public var ignoreResize:Boolean = false; // If true, temporarily ignore resize events.
 
 	// Runtime
 	public var runtime:ScratchRuntime;
@@ -601,7 +602,7 @@ public class Scratch extends Sprite {
 	protected function isShowing(obj:DisplayObject):Boolean { return obj.parent != null }
 
 	public function onResize(e:Event):void {
-		fixLayout();
+		if (!ignoreResize) fixLayout();
 	}
 
 	public function fixLayout():void {
