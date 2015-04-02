@@ -28,22 +28,61 @@
 //		step() - do background tasks
 
 package ui.parts {
-	import flash.display.GradientType;
+import access.PartAccImpl;
+
+import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.text.*;
-	import translation.Translator;
-	import uiwidgets.IconButton;
+
+import mx.core.mx_internal;
+
+import translation.Translator;
+
+import ui.AccessibleComponent;
+
+import uiwidgets.IconButton;
  	import util.DrawPath;
 
-public class UIPart extends Sprite {
+use namespace mx_internal;
+
+[AccessibilityClass(implementation="access.PartAccImpl")]
+public class UIPart extends AccessibleComponent {
 
 	protected static const cornerRadius:int = 8;
 
 	public var app:Scratch;
 	public var w:int, h:int;
+
+	public function UIPart(app:Scratch) {
+		this.app = app;
+		this.tabEnabled = true;
+		initializeAccessibility();
+	}
+
+	//--------------------------------------------------------------------------
+	//
+	//  Class mixins
+	//
+	//--------------------------------------------------------------------------
+	private var accClass:Class = PartAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
+	/**
+	 *  Placeholder for mixin by IconButtonAccImpl.
+	 */
+	mx_internal static var createAccessibilityImplementation:Function;
+
+
+	/**
+	 *  @inheritDoc
+	 */
+	override protected function initializeAccessibility():void
+	{
+		if (UIPart.createAccessibilityImplementation != null)
+			UIPart.createAccessibilityImplementation(this);
+	}
+
 
 	public function right():int { return x + w }
 	public function bottom():int { return y + h }

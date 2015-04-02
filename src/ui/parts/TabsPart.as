@@ -40,7 +40,8 @@ public class TabsPart extends UIPart {
 		function selectImages(b:IconButton):void { app.setTab('images') }
 		function selectSounds(b:IconButton):void { app.setTab('sounds') }
 
-		this.app = app;
+		super(app);
+		this.name = 'Workarea Tabs';
 		scriptsTab = makeTab('Scripts', selectScripts);
 		imagesTab = makeTab('Images', selectImages); // changed to 'Costumes' or 'Scenes' by refresh()
 		soundsTab = makeTab('Sounds', selectSounds);

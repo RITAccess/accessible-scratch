@@ -67,7 +67,8 @@ public class ImagesPart extends UIPart {
 	private var cameraButton:IconButton;
 
 	public function ImagesPart(app:Scratch) {
-		this.app = app;
+		super(app);
+		this.name = 'Images';
 		addChild(shape = new Shape());
 
 		addChild(newCostumeLabel = makeLabel('', new TextFormat(CSS.font, 12, CSS.textColor, true)));

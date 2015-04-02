@@ -51,7 +51,8 @@ public class ScriptsPart extends UIPart {
 	private var lastY:int = -10000000; // impossible value to force initial update
 
 	public function ScriptsPart(app:Scratch) {
-		this.app = app;
+		super(app);
+		this.name = 'Scripts';
 
 		addChild(shape = new Shape());
 		addChild(spriteWatermark = new Bitmap());

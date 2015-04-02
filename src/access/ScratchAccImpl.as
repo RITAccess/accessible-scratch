@@ -8,6 +8,7 @@ package access
 import flash.accessibility.Accessibility;
 import flash.accessibility.AccessibilityImplementation;
 import flash.accessibility.AccessibilityProperties;
+import flash.display.DisplayObject;
 import flash.events.Event;
 import mx.core.mx_internal;
 import mx.accessibility.AccConst;
@@ -201,6 +202,14 @@ use namespace mx_internal;
 public class ScratchAccImpl extends AccessibilityImplementation
 {
 
+    private static var numIds:uint = 1;
+
+    protected static function getNewID():uint {
+        return numIds++;
+    }
+
+    protected var accId:uint;
+
     //--------------------------------------------------------------------------
     //
     //  Class methods
@@ -297,6 +306,7 @@ public class ScratchAccImpl extends AccessibilityImplementation
         super();
 
         this.master = master;
+        this.accId = getNewID();
 
         stub = false;
 
@@ -382,6 +392,9 @@ public class ScratchAccImpl extends AccessibilityImplementation
      */
     override public function get_accRole(childID:uint):uint
     {
+        if (childID != 0) {
+            return getChildImpl(childID).get_accRole(0);
+        }
         return role;
     }
 
@@ -402,7 +415,7 @@ public class ScratchAccImpl extends AccessibilityImplementation
 
         // For simple children, do not include anything but the default name.
         // Examples: combo box items, list items, etc.
-        if (childID)
+        if (childID != 0)
         {
             accName = getName(childID);
             // Historical: Return null and not "" for empty and null values.
@@ -436,7 +449,42 @@ public class ScratchAccImpl extends AccessibilityImplementation
      */
     override public function getChildIDArray():Array
     {
-        return [];
+        var childIDs:Array = [];
+
+        if (master.numChildren > 0)
+        {
+            var n:uint = master.numChildren;
+            var j:int = 0;
+            for (var i:int = 0; i < n; i++)
+            {
+                var elem:DisplayObject = master.getChildAt(i);
+                if (elem is AccessibleComponent) {
+                    var impl:ScratchAccImpl = ((elem as AccessibleComponent).accessibilityImplementation as ScratchAccImpl);
+                    childIDs[j] = impl.accId;
+                    j++;
+                }
+            }
+        }
+        return childIDs;
+    }
+
+    protected function getChildImpl(childId:uint):ScratchAccImpl {
+
+        if (master.numChildren > 0)
+        {
+            var n:uint = master.numChildren;
+            for (var i:int = 0; i < n; i++)
+            {
+                var elem:DisplayObject = master.getChildAt(i);
+                if (elem is AccessibleComponent) {
+                    var impl:ScratchAccImpl = ((elem as AccessibleComponent).accessibilityImplementation as ScratchAccImpl);
+                    if (impl.accId == childId) {
+                        return impl;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -449,6 +497,7 @@ public class ScratchAccImpl extends AccessibilityImplementation
      */
     override public function accSelect(selFlag:uint, childID:uint):void
     {
+
     }
 
     //--------------------------------------------------------------------------
@@ -469,7 +518,10 @@ public class ScratchAccImpl extends AccessibilityImplementation
      */
     protected function getName(childID:uint):String
     {
-        return null;
+        if (childID == 0) {
+            return null;
+        }
+        return getChildImpl(childID).getName(0);
     }
 
     /**
@@ -482,6 +534,9 @@ public class ScratchAccImpl extends AccessibilityImplementation
      */
     protected function getState(childID:uint):uint
     {
+        if (childID != 0) {
+            return getChildImpl(childID).getState(0);
+        }
         var accState:uint = AccConst.STATE_SYSTEM_NORMAL;
 
         if (!(master as Object).enabled || isAncestorDisabled(master)) //TODO: HACK
@@ -502,21 +557,6 @@ public class ScratchAccImpl extends AccessibilityImplementation
         }
 
         return accState;
-    }
-
-    /**
-     *  @private
-     */
-    protected function createChildIDArray(n:int):Array
-    {
-        var a:Array = new Array(n);
-
-        for (var i:int = 0; i < n; i++)
-        {
-            a[i] = i + 1;
-        }
-
-        return a;
     }
 
     //--------------------------------------------------------------------------

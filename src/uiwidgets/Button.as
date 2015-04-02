@@ -37,7 +37,7 @@ public class Button extends Sprite {
 		this.action = action;
 		this.compact = compact;
 		this.tipName = tipName;
-        this.tabIndex = 1;
+        this.tabEnabled = true;
 		addLabel(label);
 		mouseChildren = false;
 		addEventListener(MouseEvent.MOUSE_OVER, mouseOver);

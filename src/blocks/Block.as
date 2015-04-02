@@ -122,7 +122,7 @@ public class Block extends AccessibleComponent {
 		this.op = op;
 
 		// allow users to tab to select blocks
-		this.tabIndex = 1;
+		this.tabEnabled = true;
 
 		if ((Specs.CALL == op) ||
 			(Specs.GET_LIST == op) ||

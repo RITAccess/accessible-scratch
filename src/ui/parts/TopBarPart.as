@@ -49,9 +49,10 @@ public class TopBarPart extends UIPart {
 	private const offlineNoticeFormat:TextFormat = new TextFormat(CSS.font, 13, CSS.white, true);
 
 	public function TopBarPart(app:Scratch) {
-		this.app = app;
+		super(app);
 		addButtons();
 		refresh();
+		this.name = 'Menu Bar';
 	}
 
 	protected function addButtons():void {

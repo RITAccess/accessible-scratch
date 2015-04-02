@@ -55,7 +55,8 @@ public class SoundsPart extends UIPart {
 	private var recordButton:IconButton;
 
 	public function SoundsPart(app:Scratch) {
-		this.app = app;
+		super(app);
+		this.name = 'Sounds';
 		addChild(shape = new Shape());
 
 		addChild(newSoundLabel = makeLabel('', new TextFormat(CSS.font, 12, CSS.textColor, true)));

@@ -65,7 +65,7 @@ public class IconButton extends AccessibleComponent {
 	public function IconButton(clickFunction:Function, onImageOrName:*, offImageObj:DisplayObject = null, isRadioButton:Boolean = false, narrationText:String = null) {
 		this.clickFunction = clickFunction;
 		this.isRadioButton = isRadioButton;
-        this.tabIndex = 1;
+        this.tabEnabled = true;
         this.name = (narrationText != null) ? narrationText : (onImageOrName is String ? onImageOrName as String : 'icon');
         this.role = AccConst.ROLE_SYSTEM_PUSHBUTTON;
 		useDefaultImages();
