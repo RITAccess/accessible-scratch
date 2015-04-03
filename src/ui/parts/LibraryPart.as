@@ -66,7 +66,8 @@ public class LibraryPart extends UIPart {
 	private var videoButton:IconButton;
 
 	public function LibraryPart(app:Scratch) {
-		this.app = app;
+		super(app);
+		this.name = 'Library';
 		shape = new Shape();
 		addChild(shape);
 

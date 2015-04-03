@@ -67,7 +67,8 @@ public class SpriteInfoPart extends UIPart implements DragClient {
 	private var lastSrcImg:DisplayObject;
 
 	public function SpriteInfoPart(app:Scratch) {
-		this.app = app;
+		super(app);
+		this.name = 'Sprite info';
 		shape = new Shape();
 		addChild(shape);
 		addParts();

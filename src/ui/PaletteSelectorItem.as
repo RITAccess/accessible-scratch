@@ -55,7 +55,7 @@ public class PaletteSelectorItem extends AccessibleComponent {
 		addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
 		addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
 		addEventListener(MouseEvent.CLICK, mouseUp);
-        this.tabIndex = 1;
+        this.tabEnabled = true;
 
         addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
         initializeAccessibility();

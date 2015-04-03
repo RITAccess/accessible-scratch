@@ -210,7 +210,7 @@ class PianoKey extends Sprite {
 		note = n;
         piano = parent;
 		isBlack = Piano.isBlack(n);
-        this.tabIndex = 1;
+        this.tabEnabled = true;
 		redraw();
         var self:PianoKey = this;
         addEventListener(FocusEvent.FOCUS_IN, handleFocus);

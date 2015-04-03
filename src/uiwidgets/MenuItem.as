@@ -77,7 +77,7 @@ public class MenuItem extends AccessibleComponent {
             addEventListener(FocusEvent.FOCUS_OUT, mouseOut);
             addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 		}
-        this.tabIndex = 1;
+        this.tabEnabled = true;
         initializeAccessibility();
     }
 

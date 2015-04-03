@@ -66,7 +66,8 @@ public class StagePart extends UIPart {
 	private var yReadout:TextField;
 
 	public function StagePart(app:Scratch) {
-		this.app = app;
+		super(app);
+		this.name = 'Stage';
 		outline = new Shape();
 		addChild(outline);
 		addTitleAndInfo();

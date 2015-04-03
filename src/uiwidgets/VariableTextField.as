@@ -30,7 +30,7 @@ public class VariableTextField extends TextField {
 
     public function VariableTextField() {
         super();
-        this.tabIndex = 1;
+        this.tabEnabled = true;
     }
 
 	override public function set text(value:String):void {

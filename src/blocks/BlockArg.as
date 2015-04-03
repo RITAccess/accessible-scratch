@@ -70,7 +70,7 @@ public class BlockArg extends Sprite {
 	//	none of the above - custom subclass of BlockArg
 	public function BlockArg(type:String, color:int, editable:Boolean = false, menuName:String = '') {
 		this.type = type;
-        this.tabIndex = 1;
+        this.tabEnabled = true;
 
         addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 
