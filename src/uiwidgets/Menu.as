@@ -27,14 +27,25 @@
 // elements are actions.
 
 package uiwidgets {
-	import flash.display.*;
+import access.MenuAccImpl;
+
+import flash.display.*;
 	import flash.events.*;
 	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
 	import flash.utils.getTimer;
-	import translation.TranslatableStrings;
 
-public class Menu extends Sprite {
+import mx.core.mx_internal;
+import mx.events.ToolTipEvent;
+
+import translation.TranslatableStrings;
+
+import ui.AccessibleComponent;
+
+use namespace mx_internal;
+
+[AccessibilityClass(implementation="access.MenuAccImpl")]
+public class Menu extends AccessibleComponent {
 
 	// when stringCollectionMode is true menus are not displayed but strings are recorded for translation
 	public static var stringCollectionMode:Boolean;
@@ -47,8 +58,8 @@ public class Menu extends Sprite {
 	public static var line:Object = new Object;
 	private static var menuJustCreated:Boolean;
 
-	private var menuName:String = '';
-	private var allItems:Array = [];
+	public var menuName:String = '';
+	public var allItems:Array = [];
 	private var firstItemIndex:int = 0;
 	private var maxHeight:int;
 	private var maxScrollIndex:int;
@@ -60,7 +71,31 @@ public class Menu extends Sprite {
 		this.menuName = menuName;
 		this.color = color;
 		this.itemHeight = itemHeight;
+		this.tabEnabled = true;
+		initializeAccessibility();
 	}
+
+	//--------------------------------------------------------------------------
+	//
+	//  Class mixins
+	//
+	//--------------------------------------------------------------------------
+	private var accClass:Class = MenuAccImpl; //TODO: HACK (class must be referenced in order to be compiled in)
+	/**
+	 *  Placeholder for mixin by IconButtonAccImpl.
+	 */
+	mx_internal static var createAccessibilityImplementation:Function;
+
+
+	/**
+	 *  @inheritDoc
+	 */
+	override protected function initializeAccessibility():void
+	{
+		if (Menu.createAccessibilityImplementation != null)
+			Menu.createAccessibilityImplementation(this);
+	}
+
 
 	public function addItem(label:*, value:* = null, enabled:Boolean = true, checkmark:Boolean = false):void {
 		var last:MenuItem = allItems.length ? allItems[allItems.length-1] : null;
@@ -68,6 +103,7 @@ public class Menu extends Sprite {
 		if ((!last || last.isLine()) && newItem.isLine()) return;
 		newItem.showCheckmark(checkmark);
 		allItems.push(newItem);
+		dispatchEvent(new ToolTipEvent("toolTipChanged"));
 	}
 
 	public function addLine():void {

@@ -9,6 +9,7 @@ import flash.accessibility.Accessibility;
 import flash.accessibility.AccessibilityImplementation;
 import flash.accessibility.AccessibilityProperties;
 import flash.display.DisplayObject;
+import flash.display.Sprite;
 import flash.events.Event;
 import mx.core.mx_internal;
 import mx.accessibility.AccConst;
@@ -208,7 +209,7 @@ public class ScratchAccImpl extends AccessibilityImplementation
         return numIds++;
     }
 
-    protected var accId:uint;
+    public var accId:uint;
 
     //--------------------------------------------------------------------------
     //
@@ -449,33 +450,31 @@ public class ScratchAccImpl extends AccessibilityImplementation
      */
     override public function getChildIDArray():Array
     {
-        var childIDs:Array = [];
+        return childrenOf(master).filter(function callback(item:*, index:int, array:Array):Boolean {
+            return item is AccessibleComponent;
+        }).map(function callback(item:*, index:int, array:Array):uint {
+            return (item.accessibilityImplementation as ScratchAccImpl).accId;
+        });
+    }
 
-        if (master.numChildren > 0)
-        {
-            var n:uint = master.numChildren;
-            var j:int = 0;
-            for (var i:int = 0; i < n; i++)
-            {
-                var elem:DisplayObject = master.getChildAt(i);
-                if (elem is AccessibleComponent) {
-                    var impl:ScratchAccImpl = ((elem as AccessibleComponent).accessibilityImplementation as ScratchAccImpl);
-                    childIDs[j] = impl.accId;
-                    j++;
-                }
+    private function childrenOf(elem:Sprite):Array {
+        var children:Array = [];
+        if (elem.numChildren > 0) {
+            var n:uint = elem.numChildren;
+            for(var i:int=0; i<n; i++) {
+                children.push(elem.getChildAt(i));
             }
         }
-        return childIDs;
+        return children;
     }
 
     protected function getChildImpl(childId:uint):ScratchAccImpl {
-
         if (master.numChildren > 0)
         {
             var n:uint = master.numChildren;
             for (var i:int = 0; i < n; i++)
             {
-                var elem:DisplayObject = master.getChildAt(i);
+                var elem:Sprite = master.getChildAt(i) as Sprite;
                 if (elem is AccessibleComponent) {
                     var impl:ScratchAccImpl = ((elem as AccessibleComponent).accessibilityImplementation as ScratchAccImpl);
                     if (impl.accId == childId) {

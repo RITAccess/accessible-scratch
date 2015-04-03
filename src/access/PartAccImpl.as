@@ -19,6 +19,9 @@ public class PartAccImpl extends ScratchAccImpl {
 
     public override function get_accName(childID:uint):String
     {
+        if (childID != 0) {
+            return getChildImpl(childID).get_accName(0);
+        }
         var name:String = (master as UIPart).name;
         return name;
     }
