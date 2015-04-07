@@ -969,13 +969,15 @@ public class Block extends AccessibleComponent {
                         }
 
                         var targetSummary:String = target.getSummary();
-                        var trimTextLength = targetSummary.length;
+                        var trimTextLength = targetSummary.length + 1;
                         nextTargetIndex += 1;
                         if ( nextTargetIndex < targets.length ) {
                             var nextTarget = targets[nextTargetIndex][1];
                             if ( nextTarget is Block) {
                                 var nextTargetSummary:String = nextTarget.getSummary();
-                                trimTextLength = targetSummary.indexOf( "\n" ) || targetSummary.length;
+                                if (targetSummary.indexOf( "\n" ) != -1) {
+                                    trimTextLength = targetSummary.indexOf( "\n" );
+                                }
                             }
                         }
 
