@@ -932,13 +932,17 @@ public class Block extends AccessibleComponent {
                     Scratch.app.scriptsPane.cleanUp();
                 });
 
-				Scratch.app.scriptsPane.findTargetsFor(this).forEach( function(e:*,e2:*,e3:*):void {
+                var targets = Scratch.app.scriptsPane.findTargetsFor(this);
+
+                var nextTargetIndex = 0;
+                targets.forEach( function(e:*,e2:*,e3:*):void {
 					var target:* = e[1];
 					var targetLocation:Number = e[2];
 					var location:String = "";
 					var appendFunction:Function = function():void {};
 
                     if (target is Block) {
+
                         switch (targetLocation) {
                             case (ROLE_NONE):
                             {
@@ -964,7 +968,23 @@ public class Block extends AccessibleComponent {
                             }
                         }
 
-                        m.addItem(location + target.getSummary(), appendFunction);
+                        var targetSummary:String = target.getSummary();
+                        var trimTextLength = targetSummary.length + 1;
+                        nextTargetIndex += 1;
+                        if ( nextTargetIndex < targets.length ) {
+                            var nextTarget = targets[nextTargetIndex][1];
+                            if ( nextTarget is Block) {
+                                var nextTargetSummary:String = nextTarget.getSummary();
+                                if (targetSummary.indexOf( "\n" ) != -1) {
+                                    trimTextLength = targetSummary.indexOf( "\n" );
+                                }
+                            }
+                        }
+
+                        // we take a substring so that the summary only contains the relevant information
+                        var menuSummary = targetSummary.substr(0, trimTextLength);
+
+                        m.addItem(location + menuSummary, appendFunction);
                     }
 				});
 
